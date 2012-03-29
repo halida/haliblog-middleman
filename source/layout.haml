@@ -1,0 +1,30 @@
+!!!
+%html
+  %head
+    %title= @title || "网络寻租"
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" /> 
+
+    = stylesheet_link_tag "pygments-default", "site"
+    = javascript_include_tag "jquery"
+
+  %body.color-4
+    #warper
+      = partial :nav
+      #block-nav
+      #content= yield
+      = partial :footer
+
+    -# = partial :chat
+    = partial :return_top
+
+    -# = partial :rsc
+
+    = javascript_include_tag "jquery.pjax", "jquery.appear-1.1.1.min", "main", "vim"
+    :coffeescript
+      $ ->
+          init()
+          init_vim_key('#content')
+
+    = partial :ga

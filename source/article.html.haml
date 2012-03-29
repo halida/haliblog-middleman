@@ -1,0 +1,8 @@
+.article
+  = partial :title_side
+  %h1.article-title= @article.show_title
+  =@article.get_content
+
+= partial :stamp, :locals => {:article => @article}
+
+= partial :comments

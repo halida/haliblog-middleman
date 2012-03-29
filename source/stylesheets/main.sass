@@ -1,0 +1,207 @@
+@import compass/reset
+@import compass/css3, compass/utilities
+@import "compass/layout/stretching"
+@import "compass/css3/transform"
+@import "compass/css3/transition"
+
+@import compass/layout
+@import blueprint
+
+body
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif
+
+// Base font
+=font-default
+  font: 14px Arial, Helvetica, sans-serif
+=font-header
+  font: 30px Arial, Helvetica, sans-serif
+=font-footer
+  font: 10px Arial, Helvetica, sans-serif
+
+
+#color_panel
+  margin-top: 3px
+  float: right
+  .color
+    color: black
+    display: inline-block
+    width: 20px
+    height: 20px
+    border: 1px solid #000000
+#color-select
+  float: right
+
+.align-center
+  align: center
+
+//format
+.document
+  line-height: 23px
+h1
+  +font-header
+  padding: 10px 0
+p
+  margin: 10px 0
+
+ul
+  list-style-type: square
+ol
+  list-style-type: decimal
+ul, ol
+  padding-left: 5px
+  margin-left: 10px
+li
+  padding-bottom: 4px
+
+hr
+  margin: 30px auto 80px
+  width: 150px
+
+//layouts
+$grid : 70px
+$content-width: 14 * $grid
+
+// Links
+a
+  cursor: pointer
+  text-decoration: none
+  &:hover
+    text-decoration: none
+  &:focus,
+  &:active
+    outline: none
+  &:visited
+    // Default style for visited links
+
+body
+  +font-default
+  align: center
+
+#warper
+  margin: auto
+  width: 700px
+  min-height: 100%
+  position: relative
+  +single-box-shadow
+  #block-nav  
+    height: 30px  
+
+  #content, footer
+    padding: 0px 10px
+  #content
+    overflow-y: scroll
+    word-wrap: break-word
+    padding-top: 10px  
+    .article
+      img
+        +single-box-shadow
+        +border-radius(5px)
+
+.article-title
+  text-align: center
+  padding: 10px
+
+.article-list
+  clear: both
+  padding: 10px
+  .sep
+    width: 40px      
+    display: inline-block 
+
+nav
+  top: 0px
+  width: 700px
+  height: 32px
+  position: fixed
+  z-index: 1000
+  font-weight: bold
+  border-bottom: 1px solid #000000
+
+  #container
+
+    .first-nav
+      display: inline-block
+    .secondary-nav
+      float: right
+  
+    ul
+      li
+        display: inline
+        line-height: 30px
+        padding: 0 15px
+
+
+.more
+  text-align: center
+  padding: 20px
+  cursor: pointer
+
+
++sticky-footer(72px, "#layout", "#layout_footer", "footer")
+footer
+  border-top: 1px solid #000000
+
+  padding-top: 20px
+  align: center
+  +font-footer
+
+  $blueprint_grid_columns : 8
+  $blueprint_grid_width : 80px
+
+  .info
+    +column(3)
+
+  .time
+    +column(5)
+
+#comments
+  margin-top: 90px
+
+.time-stamp
+  margin-top: 10px
+  text-align: right
+
+#return-top-block
+  position: fixed
+  width: 100%
+  bottom: -130px
+  +transition-property(all)
+  +transition-duration(0.5s)
+  +transition-timing-function(ease-in)
+
+  #return-top-inner
+    width: 700px
+    height: 30px
+    margin: 0px auto
+
+#return-top
+  outline: medium none
+  border: 0px none
+
+  display: block
+  position: relative
+  left: -62px
+
+  width: 80px  
+  height: 14px
+
+  padding: 5px 10px
+  +border-top-radius(4px)
+
+  font-weight: bold
+  text-align: center
+
+  +rotate(270deg)
+
+  +opacity(0.1)
+
+  +transition-property(all)
+  +transition-duration(0.5s)
+  +transition-timing-function(ease-in)
+  &:hover
+    +opacity(1)
+
+#___plusone_0
+  position: absolute
+  right: 0px
+  top: 60px
