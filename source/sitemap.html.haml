@@ -5,14 +5,14 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-- for url in ['/', '/about', '/list']
+- for url in ['/', '/about.html', '/list.html']
   %url
     %loc= "http://blog.linjunhalida.com#{url}"
     %changefreq daily
 
 - for article in @articles
   %url
-    %loc= "http://blog.linjunhalida.com/article/#{article.title}"
+    %loc= "http://blog.linjunhalida.com/article/#{article.title}.html"
     %changefreq daily
 
 </urlset>

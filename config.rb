@@ -54,17 +54,17 @@ require './blog_update'
 articles = Article.all :order => [:created.desc]
 
 Article.each do |article|
-  page "/article/#{article.title}", proxy: "article.html" do
+  page "/article/#{article.title}.html", proxy: "article.html" do
     @article = article
   end
 end
 
-page "/feed", proxy: "feed.html", layout: :empty do
+page "/feed.xml", proxy: "feed.html", layout: :empty do
   @articles = Article.first(10, :order => [:created.desc] )
   @updated = @articles[0].updated
 end
 
-page "/about", proxy: "article.html" do
+page "/about.html", proxy: "article.html" do
   @article = Article.first title: "about"
 end
 
@@ -72,7 +72,7 @@ page '/sitemap.xml', proxy: "sitemap.html", layout: :empty do
   @articles = articles
 end
 
-page "/list", proxy: "list.html" do
+page "/list.html", proxy: "list.html" do
   @articles = articles
 end
 

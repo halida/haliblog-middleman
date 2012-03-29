@@ -1,7 +1,7 @@
 - @articles.each do |article|
 
   %h1.article-title
-    = link_to article.show_title, "/article/#{article.title}", true
+    = link_to article.show_title, "/article/#{article.title}.html", true
 
   .article= article.get_content
 
@@ -12,7 +12,7 @@
 - if @articles.length > 0
 
   #activity-more.more
-    %a{onclick: "window.location = './list'"} < Click Me to see More >
+    %a{onclick: "window.location = './list.html'"} < Click Me to see More >
 
     - from = @articles[-1].id
     :coffeescript
