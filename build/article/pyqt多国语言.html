@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list.html">列表</a>
+            </li>
+            <li>
+              <a href="/about.html">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed.xml">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>pyqt多国语言</h1>
+          <div class="document">
+          <div class="section" id="qt">
+          <h1>qt的多国语言支持方案</h1>
+          <p>qt在设计的时候就考虑到了多国语言应该如何处理, 原理以及使用方法很简单. 如下:</p>
+          <p>第一步: 写代码的时候, 对于需要翻译的词语, 用tr()包起来, 比如:</p>
+          <pre class="literal-block">
+          QPushButton hello(QPushButton::tr(&quot;Hello world!&quot;));
+          </pre>
+          <p>这样qt就知道这些词语是需要翻译的了. 然后qt需要把这些词语取出来, 放到一个文件里面去, 好进行下一步的翻译工作.</p>
+          <p>在你的pro文件里面说明这个文件的名称:</p>
+          <pre class="literal-block">
+          TRANSLATIONS    = clabel_zh_CN.ts
+          </pre>
+          <p>这样就可以利用lupdate这个工具来把需要翻译的词语取出来:</p>
+          <pre class="literal-block">
+          lupdate-qt4 clabel.pro
+          </pre>
+          <p>然后, 我们就可以开始翻译工作了. qt提供了一个配套的翻译工具: linguist:</p>
+          <pre class="literal-block">
+          linguist-qt4 clabel_zh_CN.ts
+          </pre>
+          <p>其实ts文件是xml的格式, 你想直接编辑文本也是可以的.</p>
+          <p>当做完翻译工作之后, 我们需要把ts文件编译一下, 方便程序使用:</p>
+          <pre class="literal-block">
+          lrelease-qt4 clabel_zh_CN.ts
+          </pre>
+          <p>这样就会生成clabel_zh_CN.qm. 最后, 在代码里面加上选择语言的代码:</p>
+          <pre class="literal-block">
+          QTranslator trans;
+          trans.load(&quot;clabel_zh_CN&quot;);
+          app.installTranslator(&amp;trans);
+          
+          QPushButton hello(QPushButton::tr(&quot;Hello world!&quot;));
+          hello.show();
+          
+          app.exec();
+          </pre>
+          <p>qt多国语言更详细的介绍在: <a class="reference external" href="http://doc.qt.nokia.com/4.6/i18n-source-translation.html">http://doc.qt.nokia.com/4.6/i18n-source-translation.html</a></p>
+          </div>
+          <div class="section" id="pyqt">
+          <h1>pyqt下面如何实现多国语言</h1>
+          <p>pyqt里面实现的过程和qt里面的类似, 只是因为第一步需要扫描的不是c++代码, 所以需要利用一个pyqt的工具: pylupdate4, 用法和lupdate一样.</p>
+          <p>首先写程序</p>
+          <div class="highlight"><pre><span class="n">trans</span> <span class="o">=</span> <span class="n">QTranslator</span><span class="p">()</span>
+          <span class="n">trans</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;plabel_zh_CN&#39;</span><span class="p">)</span>
+          <span class="n">app</span><span class="o">.</span><span class="n">installTranslator</span><span class="p">(</span><span class="n">trans</span><span class="p">)</span>
+          
+          <span class="n">button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">tr</span><span class="p">(</span><span class="s">&quot;hello world!&quot;</span><span class="p">))</span>
+          <span class="n">button</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+          </pre></div>
+          <p>等等, 里面的tr是什么?</p>
+          <pre class="literal-block">
+          def tr(msg):
+              return QCoreApplication.translate(&quot;&#64;default&quot;, msg)
+          </pre>
+          <p>qt翻译是根据类的名称来走的, 调用了什么类的tr, 就取这个类里面设置的翻译.</p>
+          <p>qt里面是可以利用QObject::tr来翻译, 但是pyqt里面不能,
+          pylupdate4只是做字符串查找, 看有什么字符串是在tr后面的, 然后根据tr调用者来把这个词语归类, 如果没有调用者, 就把它归类到 &quot;&#64;default&quot; 里面. 于是我就只好利用上面的方法来做一个规避..有点恶心, 看看以后是否会有更好的方法来处理.</p>
+          <p>对于类里面的翻译, 不需要那么麻烦:</p>
+          <pre class="literal-block">
+          class Input(QWidget):
+              def __init__(self):
+                  super(Input, self).__init__()
+                  label = QLabel(self.tr(&quot;input:&quot;))
+          </pre>
+          <p>这里面的tr, 就可以被正确翻译出来.</p>
+          <p>然后运行pylupdate, 因为我们是python程序, 没有pro, 就只能手动指定文件了</p>
+          <pre class="literal-block">
+          pylupdate4 main.py -ts plabel_zh_CN.ts
+          </pre>
+          <p>好了, 下面的步骤和c++的方法一样</p>
+          <pre class="literal-block">
+          linguist-qt4 clabel_zh_CN.ts
+          lrelease-qt4 plabel_zh_CN.ts
+          </pre>
+          <p>然后执行代码, 程序按照我们期望的方式翻译过来了, 是不是很简单?</p>
+          <p>上面的示例代码放在这里: <a class="reference external" href="http://bitbucket.org/linjunhalida/pyqt-i10n-example">http://bitbucket.org/linjunhalida/pyqt-i10n-example</a></p>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2010/11/21 16:44:00</p>
+          <p>更新时间: 2010/11/25 13:35:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog" target="_blank">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>

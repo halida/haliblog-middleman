@@ -50,11 +50,13 @@ require 'coffee-filter'
 require './rst'
 require './db'
 require './blog_update'
+require 'uri'
 
 articles = Article.all :order => [:created.desc]
 
 Article.each do |article|
-  page "/article/#{article.title}.html", proxy: "article.html" do
+  title = article.title
+  page "/article/#{title}.html", proxy: "article.html" do
     @article = article
   end
 end

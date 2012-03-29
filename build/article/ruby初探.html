@@ -1,0 +1,246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list.html">列表</a>
+            </li>
+            <li>
+              <a href="/about.html">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed.xml">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>ruby初探</h1>
+          <div class="document">
+          <img alt="http://www.ruby-lang.org/images/logo.gif" class="align-center" src="http://www.ruby-lang.org/images/logo.gif" />
+          <div class="section" id="pythonruby">
+          <h1>python和ruby的区别</h1>
+          <p>python经常被拿来和ruby做比较, 他们都是动态脚本语言, 在应用场景上面也非常相似.
+          我们听到的, 它们之间广为认知的区别是:</p>
+          <dl class="docutils">
+          <dt>python</dt>
+          <dd>&quot;There should be one - and preferably only one - obvious way to do it.&quot;</dd>
+          <dt>ruby</dt>
+          <dd>&quot;There Is More Than One Way To Do It.&quot;</dd>
+          </dl>
+          <p>但是远远不止这些, 它们之间有无数的细节不同. 根据ruby官方网站上面给出的 <a class="reference external" href="http://www.ruby-lang.org/en/documentation/ruby-from-other-languages/to-ruby-from-python/">针对python程序员的介绍</a> :</p>
+          <ul class="simple">
+          <li>Strings are mutable. <strong>字符串是可写的.</strong></li>
+          <li>You can make constants (variables whose value you don’t intend to change). <strong>可以设置常量.</strong></li>
+          <li>There are some enforced case-conventions (ex. class names start with a capital letter, variables start with a lowercase letter). <strong>强制名称大小写.</strong></li>
+          <li>There’s only one kind of list container (an Array), and it’s mutable. <strong>只有一个list容器</strong></li>
+          <li>Double-quoted strings allow escape sequences (like t) and a special “expression substitution” syntax (which allows you to insert the results of Ruby expressions directly into other strings without having to &quot;add &quot; + &quot;strings &quot; + &quot;together&quot;). Single-quoted strings are like Python’s r&quot;raw strings&quot;. <strong>&quot;&quot;字符串可以内嵌语句</strong></li>
+          <li>There are no “new style” and “old style” classes. Just one kind. <strong>只有一种类.(相对python有新旧之分)</strong></li>
+          <li>You never directly access attributes. With Ruby, it’s all method calls. <strong>无法访问类的属性, 只能通过方法访问.</strong></li>
+          <li>Parentheses for method calls are usually optional. <strong>执行方法可以不用括号.</strong></li>
+          <li>There’s public, private, and protected to enforce access, instead of Python’s _voluntary_ underscore __convention__. <strong>可以限制类方法的访问范围了.</strong></li>
+          <li>“mixin’s” are used instead of multiple inheritance. <strong>mixin取代了多重继承.</strong></li>
+          <li>You can add or modify the methods of built-in classes. Both languages let you open up and modify classes at any point, but Python prevents modification of built-ins — Ruby does not. <strong>可以修改系统内建类的方法.</strong></li>
+          <li>You’ve got true and false instead of True and False (and nil instead of None). <strong>true/false/nil取代True/False/None</strong></li>
+          <li>When tested for truth, only false and nil evaluate to a false value. Everything else is true (including 0, 0.0, &quot;&quot;, and []). <strong>只有false/nil为假, 其他都为真.</strong></li>
+          <li>It’s elsif instead of elif. <strong>elsif取代elif</strong></li>
+          <li>It’s require instead of import. Otherwise though, usage is the same. <strong>require取代import.</strong></li>
+          <li>The usual-style comments on the line(s) above things (instead of docstrings below them) are used for generating docs. <strong>代码上面的注释是文档.</strong></li>
+          <li>There are a number of shortcuts that, although give you more to remember, you quickly learn. They tend to make Ruby fun and very productive. <strong>很多快捷方式增加产能.</strong></li>
+          <li>There’s no way to unset a variable once set (like Python’s del statement). You can reset a variable to nil, allowing the old contents to be garbage collected, but the variable will remain in the symbol table as long as it is in scope. <strong>变量是持久的, 不能被删除(除非自动垃圾收集掉)</strong></li>
+          </ul>
+          <p>上面只是一个总览, 没有给出实际的写ruby的感觉. 我们还是通过示例来看看ruby的特质.</p>
+          </div>
+          <div class="section" id="ruby">
+          <h1>ruby特质</h1>
+          <p>下面的内容取自 <a class="reference external" href="http://www.amazon.com/Ruby-Programming-Language-David-Flanagan/dp/0596516177">the ruby programming language</a>.</p>
+          <p>首先, ruby是面向对象的. 所有的值都是对象, 比如:</p>
+          <div class="highlight"><pre><span class="mi">1</span><span class="o">.</span><span class="n">class</span>   <span class="c1"># =&gt; Fixnum</span>
+          <span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="n">class</span> <span class="c1"># =&gt; Float</span>
+          </pre></div>
+          <p>注意上面, 函数和方法(上面的class)可以不用带括号, 直接执行, 并且没有歧义. ruby是不能直接访问属性的, 所以不会混淆.</p>
+          <p>blocks 和 iterators 对python程序员看起来有点怪异, 但是看多了还是很好理解:</p>
+          <div class="highlight"><pre><span class="mi">3</span><span class="o">.</span><span class="n">times</span> <span class="p">{</span><span class="nb">print</span> <span class="s2">&quot;ruby&quot;</span><span class="p">}</span>  <span class="c1"># 打印3遍 ruby</span>
+          <span class="mi">1</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">print</span> <span class="n">x</span><span class="p">}</span> <span class="c1"># 打印 123456789</span>
+          </pre></div>
+          <p>times和upto是整型的方法, 他们返回一个迭代器, 然后这个迭代器就执行下面{}内的代码.</p>
+          <p>ruby也有list和dict对应的数据结构:</p>
+          <div class="highlight"><pre><span class="n">a</span>  <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="o">]</span> <span class="c1"># 和python一样也有list</span>
+          <span class="n">a</span><span class="o">.</span><span class="n">map</span> <span class="k">do</span>     <span class="c1"># do end和{}等价</span>
+              <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+          <span class="k">end</span>
+          
+          <span class="c1"># :one是符号, 如果你知道lisp, 应该明白这个是什么,</span>
+          <span class="c1"># 如果你不知道.. 我也不知道怎么说, 就是符号啦.</span>
+          <span class="c1"># ruby的hash table写法好像没有python简洁.</span>
+          <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="ss">:one</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="ss">:two</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="p">}</span>
+          <span class="n">d</span><span class="o">[</span><span class="ss">:one</span><span class="o">]</span> <span class="c1"># =&gt; 1</span>
+          <span class="n">d</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+              <span class="nb">print</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">value</span><span class="si">}</span><span class="s2"> : </span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">; &quot;</span> <span class="c1"># ruby 里面的字符串可以嵌入语句</span>
+          <span class="k">end</span>
+          </pre></div>
+          <p>ruby的语法是面向表达式的, if之类的控制符也是表达式, 比如:</p>
+          <div class="highlight"><pre><span class="n">minimum</span> <span class="o">=</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="k">then</span> <span class="n">x</span> <span class="k">else</span> <span class="n">y</span> <span class="k">end</span>
+          </pre></div>
+          <p>ruby的操作符是作为方法来实现的, 比如 + - * / [] 等, 都可以按照需要来定义.</p>
+          <p>取值和赋值是用不同的方法, 只是读取, 用 [], 如果要赋值, 就要用 []= 了.</p>
+          <p>这些个概念的区别, 需要好好体会.</p>
+          <p>方法定义:</p>
+          <div class="highlight"><pre><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 没有&quot;:&quot;</span>
+              <span class="n">x</span><span class="o">*</span><span class="n">x</span>       <span class="c1"># 方法的返回值是最后一个表达式的值.</span>
+          <span class="k">end</span>
+          </pre></div>
+          <p>赋值:</p>
+          <div class="highlight"><pre><span class="n">x</span>  <span class="o">=</span> <span class="mi">12</span>
+          <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+          <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="c1"># 可以同时赋值多个变量</span>
+          </pre></div>
+          <p>还有些值得一提的对象: 正则表达式对象(Regexp)和范围对象(Range):</p>
+          <div class="highlight"><pre><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10</span> <span class="o">===</span> <span class="mi">5</span>         <span class="c1"># 5在1..10中间</span><span class="sr"></span>
+          <span class="sr">/\d{5}/</span> <span class="o">===</span> <span class="s2">&quot;12345&quot;</span> <span class="c1"># 匹配5个数字</span>
+          </pre></div>
+          <p>上面的1..10是Range, /d{5}/是Regexp.</p>
+          <p>然后是类了:</p>
+          <div class="highlight"><pre><span class="k">class</span> <span class="nc">Seq</span>
+              <span class="kp">include</span> <span class="no">Enumerate</span> <span class="c1"># 导入Enumerate module</span>
+              <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">by</span><span class="p">)</span> <span class="c1"># 初始化函数, 和__init__一样.</span>
+                  <span class="vi">@from</span><span class="p">,</span> <span class="vi">@to</span><span class="p">,</span> <span class="vi">@by</span> <span class="o">=</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">by</span> <span class="c1"># @表示的是类的属性.</span>
+              <span class="k">end</span>
+          
+          <span class="k">def</span> <span class="nf">each</span>
+              <span class="n">x</span> <span class="o">=</span> <span class="vi">@from</span>
+              <span class="k">while</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="vi">@to</span> <span class="c1"># while做循环</span>
+                  <span class="k">yield</span> <span class="n">x</span> <span class="c1"># 和python的yield一样.</span>
+                  <span class="n">x</span> <span class="o">+=</span> <span class="vi">@by</span>
+              <span class="k">end</span>
+          <span class="k">end</span>
+          
+          <span class="n">s</span> <span class="o">=</span> <span class="no">Seq</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+          <span class="n">s</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">print</span> <span class="n">x</span><span class="p">}</span> <span class="c1">#显示 &quot;13579&quot;</span>
+          </pre></div>
+          <p>还有一些令人意外的东西:</p>
+          <p>ruby的字符串是可变的, 比如:</p>
+          <div class="highlight"><pre><span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;hello&quot;</span>
+          <span class="n">s</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">2</span><span class="o">]=</span> <span class="s2">&quot;mo&quot;</span>
+          <span class="n">s</span> <span class="c1"># =&gt; &quot;hmolo&quot;</span>
+          </pre></div>
+          <p>ruby里面, 只有false和nil是假, 0和&quot;&quot;都是为真, 需要注意.</p>
+          </div>
+          <div class="section" id="id1">
+          <h1>如何学习ruby</h1>
+          <p>直接去 <cite>ruby看官方文档</cite> 吧. 当然, 作者写的书: <a class="reference external" href="http://www.amazon.com/Ruby-Programming-Language-David-Flanagan/dp/0596516177">the ruby programming language</a> 是深入了解ruby的基础, 和K&amp;R对C的重要性一样.</p>
+          </div>
+          <div class="section" id="id2">
+          <h1>结论</h1>
+          <p>花了一下午的时间熟悉ruby, 学习前, 感觉ruby会很繁杂, 以及会有&quot;有了python干嘛学习ruby&quot;的想法.
+          真正开始学了之后, 还是体会到一点ruby的精妙之处的. 个人感觉ruby离lisp比较近(当然, 只有lisp才有那么强大的宏).
+          等我再深入一点ruby, 再看看有什么意思吧. 恩, 还有ruby的神器: <a class="reference external" href="http://server.linjunhalida.com/blog/article/ruby_on_rails%E5%88%9D%E6%8E%A2/">ruby on rails</a>.</p>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2011/02/10 22:53:00</p>
+          <p>更新时间: 2011/02/11 11:46:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog" target="_blank">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>

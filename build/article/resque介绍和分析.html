@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list.html">列表</a>
+            </li>
+            <li>
+              <a href="/about.html">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed.xml">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>resque介绍和分析</h1>
+          <div class="document">
+          <img alt="https://a248.e.akamai.net/assets.github.com/img/7744a8503993132e8a14c79be38e3724c6564fa2/687474703a2f2f696d672e736b697463682e636f6d2f32303130303131312d6b6d326635676d747062713233656e70756a6272756a366d676b2e706e67" class="align-center" src="https://a248.e.akamai.net/assets.github.com/img/7744a8503993132e8a14c79be38e3724c6564fa2/687474703a2f2f696d672e736b697463682e636f6d2f32303130303131312d6b6d326635676d747062713233656e70756a6272756a366d676b2e706e67" style="width: 600px;" />
+          <div class="section" id="resque">
+          <h1>resque</h1>
+          <p>resque是ruby on rails下面的一个异步工作分配框架, 它利用redis的队列功能, 来达到异步处理工作的目的. 好处在于使用简便以及很容易和rails整合.</p>
+          <p>项目地址在 <a class="reference external" href="https://github.com/defunkt/resque">https://github.com/defunkt/resque</a>, 如何使用里面写的很清楚, 这里就不多说了. 具体逻辑也没有什么好说的, 无非是需要调用任务了, 塞任务到队列里面, 然后worker取队列, 然后把任务做掉.</p>
+          <p>一些细节:</p>
+          <p><strong>resque是如何enque的?</strong></p>
+          <div class="highlight"><pre><span class="n">redis</span><span class="o">.</span><span class="n">rpush</span> <span class="s2">&quot;queue:</span><span class="si">#{</span><span class="n">queue</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+          </pre></div>
+          <p><strong>presistance如何做?</strong></p>
+          <div class="highlight"><pre><span class="n">encode</span><span class="p">:</span> <span class="no">MultiJson</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
+          </pre></div>
+          <p><strong>resque是如何取work的?</strong></p>
+          <div class="highlight"><pre><span class="n">decode</span> <span class="n">redis</span><span class="o">.</span><span class="n">lpop</span><span class="p">(</span><span class="s2">&quot;queue:</span><span class="si">#{</span><span class="n">queue</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+          </pre></div>
+          </div>
+          <div class="section" id="resque-scheduler">
+          <h1>resque-scheduler</h1>
+          <p>resque-scheduler是基于resque的一个计划任务插件, 简单地说, 就是能够利用它来做一些定时和定时循环的任务. 项目主页: <a class="reference external" href="https://github.com/bvandenbos/resque-scheduler">https://github.com/bvandenbos/resque-scheduler</a>, 使用方法我也不多说了. 项目主页上都有.</p>
+          <p><strong>resque-scheduler计划的队列如何处理?</strong></p>
+          <div class="highlight"><pre><span class="c1"># First add this item to the list for this timestamp</span>
+          <span class="n">redis</span><span class="o">.</span><span class="n">rpush</span><span class="p">(</span><span class="s2">&quot;delayed:</span><span class="si">#{</span><span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">encode</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+          
+          <span class="c1"># Now, add this timestamp to the zsets.  The score and the value are</span>
+          <span class="c1"># the same since we&#39;ll be querying by timestamp, and we don&#39;t have</span>
+          <span class="c1"># anything else to store.</span>
+          <span class="n">redis</span><span class="o">.</span><span class="n">zadd</span> <span class="ss">:delayed_queue_schedule</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span>
+          </pre></div>
+          <p>竟然根据每个timestamp做了一个队列.. 计划任务都保存到一个sorted set里面.</p>
+          <p><strong>scheduler如何检查是否有新的任务?</strong></p>
+          <p>核心在于这段代码:</p>
+          <div class="highlight"><pre><span class="k">if</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="no">Resque</span><span class="o">.</span><span class="n">next_delayed_timestamp</span><span class="p">(</span><span class="n">at_time</span><span class="p">)</span>
+            <span class="n">enqueue_delayed_items_for_timestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+          
+          <span class="n">resque_scheduler</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span>
+          
+          <span class="k">def</span> <span class="nf">next_delayed_timestamp</span><span class="p">(</span><span class="n">at_time</span><span class="o">=</span><span class="kp">nil</span><span class="p">)</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">zrangebyscore</span> <span class="ss">:delayed_queue_schedule</span><span class="p">,</span> <span class="s1">&#39;-inf&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">at_time</span> <span class="o">||</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="ss">:limit</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">]</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">items</span><span class="o">.</span><span class="n">nil?</span> <span class="p">?</span> <span class="kp">nil</span> <span class="p">:</span> <span class="nb">Array</span><span class="p">(</span><span class="n">items</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+            <span class="n">timestamp</span><span class="o">.</span><span class="n">to_i</span> <span class="k">unless</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">nil?</span>
+          <span class="k">end</span>
+          </pre></div>
+          <p>enqueue_delayed_items_for_timestamp比较复杂, 就不贴了.</p>
+          </div>
+          <div class="section" id="id1">
+          <h1>结论</h1>
+          <p>基本上resque的逻辑很直观, 和想象中的一样. resque-scheduler就不一样了. 复杂很多.</p>
+          <p>我学习他们的示例代码放在: <a class="reference external" href="https://bitbucket.org/linjunhalida/code-example/src/tip/ruby/resque/">https://bitbucket.org/linjunhalida/code-example/src/tip/ruby/resque/</a></p>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2011/08/23 10:38:00</p>
+          <p>更新时间: 2011/08/23 10:50:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog" target="_blank">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>

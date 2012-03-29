@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list.html">列表</a>
+            </li>
+            <li>
+              <a href="/about.html">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed.xml">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>Metaprogramming Ruby学习笔记</h1>
+          <div class="document">
+          <p>虽然我现在一直在用ruby做rails开发, 但是ruby基本上是属于拿起来用的那种, 很多东西都不是很熟悉.</p>
+          <p>现在发现有一本Metaprogramming Ruby的书, 就看起来了. 这里整理一下学习笔记, 省得学了白学. 下面其实只是一些tips, 只是给我自己看看的. 所以大家就不要抱有什么期待了.</p>
+          <div class="section" id="id1">
+          <h1>星期一</h1>
+          <p>Ruby是全运行态, 没有编译态(对于程序员而言).</p>
+          <p>Class本身也能运行时创建.</p>
+          <p>Ruby里面的Class继承自Module, 多了一些实例化, 继承的东西.</p>
+          <p>所有Class的class是Class, Class继承Module继承Object继承BasicObject.</p>
+          <p>method的查找方式, 先看object, 然后查Class树, 中间会穿插class include的Module.</p>
+          <p>所有位置都隐含一个self, 调用方法就是把调用者当作self, irb默认self是main.</p>
+          <p>private的method只能被隐含self的方式调用, self.private_method是不能调用的.</p>
+          </div>
+          <div class="section" id="id2">
+          <h1>星期二</h1>
+          <p>obj.send(:my_method, 3) 用来做动态方法调用.</p>
+          <p>define_method用来动态定义方法.</p>
+          <p>method_missing用来处理找不到方法的时候的状况.</p>
+          <p>还有undef_method, 这些方法可以用来做很多有意思的事情了.</p>
+          </div>
+          <div class="section" id="id3">
+          <h1>星期三</h1>
+          <p>回顾了block和using.</p>
+          <p>scope在class, model, def这3个阶层. 可以用Class.new, Module.new, Module&#64;define_method动态生成.</p>
+          <p>有了instance_eval可以切换到object的scope里面去.</p>
+          <p>Proc, lambda可以保存block, &amp;用来转换Proc和block.</p>
+          <p>Proc里面return是从定义Proc的scope里面return, 这个太恶心了吧? 还有不严格判断参数. 还是用lambda比较好.</p>
+          </div>
+          <div class="section" id="id4">
+          <h1>星期四</h1>
+          <p>class 也是 module, 在它们的作用域里面执行代码, 用module_eval.</p>
+          <p>我有点明白为什么不用缩进来限制作用域了, 缩进没有明确限制作用域来得灵活.</p>
+          <p>def并不会开启一个新的scope, 还是在class的scope里面.</p>
+          <p>在class里面用&quot;&#64;&quot;定义instance variable, 用&quot;&#64;&#64;&quot;定义Class instance variable(真绕). 因为&#64;&#64;定义在类树里面, 容易产生bug, 不建议使用.</p>
+          <p>class method其实是singleton methods, 有趣.</p>
+          <p>每个object还有eigenclass. 用class &lt;&lt; obj; self end; 这样的方式访问.</p>
+          <p>加上eigenclass, ruby的类树就比较复杂了, 不过看图就好理解一些.</p>
+          <p>alias和alias_method创建别名.</p>
+          </div>
+          <div class="section" id="id5">
+          <h1>星期五</h1>
+          <p>binding用来缓存作用域, 给eval用. TOPLEVEL_BINDING是最上层的binding.</p>
+          <p>class里面有无数事件的hook, 比如inherited, included, method_added.</p>
+          <p>最后一部分activerecord用到的魔法, 我就稍微带过了, 因为具体的方法我兴趣不是很大.</p>
+          </div>
+          <div class="section" id="id6">
+          <h1>结论</h1>
+          <p>上面只是给我自己总结的一些tip, 一些我已经知道的东西, 但是对其他人非常重要的地方没有写出来. 所以需要理解的话大家还是看书吧.</p>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2012/01/01 22:31:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog" target="_blank">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list.html">列表</a>
+            </li>
+            <li>
+              <a href="/about.html">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed.xml">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>reStructuredText介绍</h1>
+          <div class="document" id="restructuredtext">
+          <h1 class="title">reStructuredText介绍</h1>
+          <table class="docinfo" frame="void" rules="none">
+          <col class="docinfo-name" />
+          <col class="docinfo-content" />
+          <tbody valign="top">
+          <tr><th class="docinfo-name">Authors:</th>
+          <td>机械唯物主义 &lt;linjunhalida&#64;gmai.com&gt;</td></tr>
+          <tr><th class="docinfo-name">Date:</th>
+          <td>2010-11-10</td></tr>
+          </tbody>
+          </table>
+          <!-- Definitions of interpreted text roles (classes) for S5/HTML data. -->
+          <!-- This data file has been placed in the public domain. -->
+          <!-- Colours
+          ======= -->
+          <!-- Text Sizes
+          ========== -->
+          <!-- Display in Slides (Presentation Mode) Only
+          ========================================== -->
+          <!-- Display in Outline Mode Only
+          ============================ -->
+          <!-- Display in Print Only
+          ===================== -->
+          <!-- Display in Handout Mode Only
+          ============================ -->
+          <!-- Incremental Display
+          =================== -->
+          <div class="section" id="id1">
+          <h1>什么是reStructuredText?</h1>
+          <p>一种写文档的方式. 简称: <a class="reference external" href="http://docutils.sourceforge.net/rst.html#try-it-online">ReST</a></p>
+          <p class="handout">已经有那么多的写文档的方式了, 为什么要用它?</p>
+          <ul class="incremental simple">
+          <li>简单, 现场学,现场会</li>
+          <li>易读</li>
+          <li>方便生成html/pdf等其他格式</li>
+          </ul>
+          <p class="handout">Q: 有wiki了, 为什么还用它?</p>
+          <p class="handout">A: 恩恩, 目标不一样, rest是用来嵌入到代码注释中的..</p>
+          </div>
+          <div class="section" id="id2">
+          <h1>怎么玩?</h1>
+          <p>不多说, 直接用: <a class="reference external" href="http://goo.gl/1jNF4">http://goo.gl/1jNF4</a></p>
+          <p class="handout">大家可以上 <a class="reference external" href="http://www.tele3.cz/jbar/rest/rest.html">http://www.tele3.cz/jbar/rest/rest.html</a> 或者: <a class="reference external" href="http://goo.gl/1jNF4">http://goo.gl/1jNF4</a> 直接试用</p>
+          </div>
+          <div class="section" id="id3">
+          <h1>语法</h1>
+          <p class="handout">那么具体的语法怎么学呢?
+          何必再写一份? 大家自己看就好了哈
+          我也看不懂多少英文, 但是会抄就好了..</p>
+          <p>There should be one-- and preferably only one --obvious way to do it.</p>
+          <p>google: rest</p>
+          <p><a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html">http://docutils.sourceforge.net/docs/user/rst/quickstart.html</a>
+          <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">http://docutils.sourceforge.net/docs/user/rst/quickref.html</a></p>
+          </div>
+          <div class="section" id="id4">
+          <h1>如何生成其他格式</h1>
+          <p>需要安装docutils</p>
+          <ul>
+          <li><p class="first">html: 有个东西叫rst2html:</p>
+          <pre class="literal-block">
+          rst2html xxx.rst xxx.html
+          </pre>
+          </li>
+          <li><p class="first">pdf: 有个东西叫rst2pdf:</p>
+          <pre class="literal-block">
+          rst2pdf xxx.rst
+          </pre>
+          </li>
+          <li><p class="first">latex: 有个东西叫rst2latex:</p>
+          <pre class="literal-block">
+          rst2latex --input-encoding=utf-8 --output-encoding=utf-8 xxx.rst &gt;&gt; s.tex
+          </pre>
+          </li>
+          </ul>
+          <p class="handout">没有弄明白rst2pdf如何弄中文.. 发了 <a class="reference external" href="http://code.google.com/p/rst2pdf/issues/detail?id=377">issue</a></p>
+          </div>
+          <div class="section" id="python-code">
+          <h1>python code</h1>
+          <div class="highlight"><pre><span class="kn">from</span> <span class="nn">docutils.core</span> <span class="kn">import</span> <span class="n">publish_string</span>
+          <span class="n">content</span> <span class="o">=</span> <span class="n">publish_string</span><span class="p">(</span>
+              <span class="n">source</span><span class="o">=</span><span class="s">&quot;doc here&quot;</span>
+              <span class="n">writer_name</span><span class="o">=</span><span class="s">&#39;html&#39;</span>
+              <span class="p">)</span>
+          </pre></div>
+          </div>
+          <div class="section" id="id5">
+          <h1>我用它来干什么?</h1>
+          <ul class="simple">
+          <li>写博客</li>
+          <li>写文档</li>
+          <li>问题: 好像没有支持ReST的网站..</li>
+          </ul>
+          </div>
+          <div class="section" id="id6">
+          <h1>连接</h1>
+          <ul class="simple">
+          <li>官方网站: <a class="reference external" href="http://docutils.sourceforge.net/rst.html#try-it-online">ReST</a></li>
+          </ul>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2010/11/10 15:39:00</p>
+          <p>更新时间: 2010/12/19 19:17:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog" target="_blank">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>

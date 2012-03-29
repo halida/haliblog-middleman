@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list.html">列表</a>
+            </li>
+            <li>
+              <a href="/about.html">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed.xml">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>我的emacs配置</h1>
+          <div class="document">
+          <p>每个emacs使用者的配置都是不一样的, 都会根据自己的习惯和喜好来调整. 这里我整理一些对emacs用户调整有帮助的内容, 以及我自己觉得不错的配置.</p>
+          <div class="section" id="emacs">
+          <h1>emacs配置如何管理?</h1>
+          <p>配置多了, 放在.emacs里面不是一回事, 我的解法是, .emacs导入真正放配置的目录, 然后require:</p>
+          <div class="highlight"><pre>(add-to-list &#39;load-path (expand-file-name &quot;~/Dropbox/sync/emacs/srcs&quot;))
+          (load &quot;main&quot;)
+          </pre></div>
+          <p>main.el是配置的汇总, 配置按照模块和功能分割成不同的文件:</p>
+          <div class="highlight"><pre>(provide &#39;main)
+          
+          ;; requires
+          (require &#39;mylib)
+          (require &#39;template)
+          (require &#39;mypython)
+          (require &#39;mydired)
+          (require &#39;myc)
+          (require &#39;mykeymap)
+          (require &#39;mygtd)
+          (require &#39;top-mode)
+          (require &#39;tabbar)
+          (require &#39;fullscreen)
+          </pre></div>
+          <p>dropbox是我同步emacs配置的工具, 你也可以用其他网盘工具.</p>
+          </div>
+          <div class="section" id="id1">
+          <h1>如何绑定自己的键位?</h1>
+          <p>每个emacs用户都会自己设定键位, 不会傻傻地M-x然后输入字符.
+          我个人的经验, 绑定键位的指导思想是: 对于显示buffer, 切换buffer之类使用非常频繁的功能, 找一些方便的直接键位来绑定, 比如:</p>
+          <div class="highlight"><pre>(global-set-key [C-tab] &#39;other-window)
+          </pre></div>
+          <p>对于一些其他不是那么频繁, 但是经常要使用的功能, 都可以绑定到间接键位上面. 我发现C-;没有使用, 按起来还很方便, 然后把所有自己定义的功能都加到上面去了:</p>
+          <div class="highlight"><pre>(global-set-key (kbd &quot;C-; 1&quot;) &#39;gtd)
+          (global-set-key (kbd &quot;C-; 2&quot;) &#39;note)
+          (global-set-key (kbd &quot;C-; 3&quot;) &#39;scratch)
+          (global-set-key (kbd &quot;C-; 4&quot;) &#39;py-shell)
+          (global-set-key (kbd &quot;C-; 5&quot;) &#39;woman)
+          (global-set-key (kbd &quot;C-; 7&quot;) &#39;twit-follow-recent-tweets)
+          (global-set-key (kbd &quot;C-; C-7&quot;) &#39;twit-post)
+          </pre></div>
+          <p>对于针对某些mode的键位绑定, 只需要改变那个mode的键位就可以了:</p>
+          <div class="highlight"><pre>(define-key dired-mode-map (kbd &quot;b&quot;) &#39;dired-up-directory)
+          </pre></div>
+          </div>
+          <div class="section" id="id2">
+          <h1>一定要设置的功能</h1>
+          <p>有些功能是如此的强大, 以至于缺少了他们emacs就不完整了..</p>
+          <ul class="simple">
+          <li><a class="reference external" href="http://www.emacswiki.org/emacs/InteractivelyDoThings">ido</a>, 如果你发现开启文件和切换buffer输入有点累的话, 用ido来节省输入.</li>
+          <li><a class="reference external" href="http://www.emacswiki.org/emacs/AutoComplete">auto-complete</a> 自动补全. 这里面的补全方案默认是取当前buffer的词语的, 对于我写python代码来说足够用了. 至于c/c++/java..等我写的时候再配置吧.</li>
+          </ul>
+          <div class="highlight"><pre>(require &#39;auto-complete)
+          (global-auto-complete-mode t)
+          ;; 匹配项目不用动手腕啦
+          (define-key ac-complete-mode-map &quot;\C-n&quot; &#39;ac-next)
+          (define-key ac-complete-mode-map &quot;\C-p&quot; &#39;ac-previous)
+          </pre></div>
+          <ul class="simple">
+          <li>漂亮的配色. color-theme有一堆配色可以选的.</li>
+          </ul>
+          <div class="highlight"><pre>(require &#39;color-theme)
+          (color-theme-arjen)
+          </pre></div>
+          <p>还有一些零散的配置, 都放在 <a class="reference external" href="http://bitbucket.org/linjunhalida/emacs/src/tip/srcs/main.el">main.el</a> 里面.</p>
+          <ul class="simple">
+          <li>template 模板系统. 写东西怎么不能用模板呢. 一遍遍地输入同样的东西多烦. 我用的是 <a class="reference external" href="http://bitbucket.org/linjunhalida/emacs/src/tip/srcs/template.el">template.el</a>, 不过感觉用的不是很熟, 还要改改.</li>
+          <li><a class="reference external" href="http://orgmode.org/">org-mode</a>. 用来写notes/todo/gtd的. 看看吧, 功能强大.</li>
+          </ul>
+          </div>
+          <div class="section" id="id3">
+          <h1>其他有价值的东西</h1>
+          <ul class="simple">
+          <li>shell-command功能. 可以在buffer当前目录执行命令. 如果不想它卡死的话, 可以在命令后面加&amp;(linux).</li>
+          <li><a class="reference external" href="http://www.lysator.liu.se/~tab/artist/">artist-mode</a>, 可以在emacs里面画图. <a class="reference external" href="http://www.cinsk.org/emacs/emacs-artist.html">artist-mode视频介绍</a></li>
+          <li>半透明. linux下面要开启特效才能半透明.</li>
+          </ul>
+          <div class="highlight"><pre>(set-frame-parameter (selected-frame) &#39;alpha &#39;(80 50))
+          (add-to-list &#39;default-frame-alist &#39;(alpha 80 50))
+          </pre></div>
+          <ul class="simple">
+          <li><a class="reference external" href="http://www.emacswiki.org/emacs/FullScreen">全屏</a>, 不全屏怎么对得起emacs呢?</li>
+          </ul>
+          </div>
+          <div class="section" id="id6">
+          <h1>资源</h1>
+          <p>emacs自带的info文档已经很多了, 不过有一些其他地方的资源不错, 值得提一下:</p>
+          <ul class="simple">
+          <li><a class="reference external" href="http://www.emacswiki.org/">emacs wiki</a>, 我想emacs用户都应该知道这里吧.</li>
+          <li><a class="reference external" href="http://bitbucket.org/linjunhalida/emacs">我的配置</a>, 好吧, 分享下.</li>
+          </ul>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2010/12/04 20:48:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog" target="_blank">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>

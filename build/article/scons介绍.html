@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list.html">列表</a>
+            </li>
+            <li>
+              <a href="/about.html">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed.xml">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>scons介绍</h1>
+          <div class="document">
+          <div class="section" id="scons">
+          <h1>什么是scons?</h1>
+          <img alt="http://www.gastronomiaycia.com/wp-content/uploads/2008/07/scones.jpg" src="http://www.gastronomiaycia.com/wp-content/uploads/2008/07/scones.jpg" />
+          <p>scons不是上面的小甜饼, 而是一个基于python的自动化构建工具. 和make一个性质. 不过, 更高级一些.</p>
+          </div>
+          <div class="section" id="id1">
+          <h1>为什么要用它呢?</h1>
+          <ul>
+          <li><p class="first">高阶的make工具</p>
+          <p>make是不错, 但是太过简单了, 很多东西都要重复写, 很多事情都做不了.. 我们需要一个更高级的工具.</p>
+          </li>
+          <li><p class="first">python</p>
+          <p>既然我们要用更高级的工具, 去找找看: automake, cmake, qmake, ant.. 已经有一堆东西了, 我们选择哪一个呢?</p>
+          <p>按照我的看法, 对于任何复杂的工具, 本质上来说, 都需要一个足够强大的编程语言来支持, 以便实现自动化和高可配置性.
+          既然python已经成为我的&quot;main stream&quot;语言, 当然要看支持python的工具了. google python + make, 第一个结果就是scons了.
+          当然, 还有很多其他的 <a class="reference external" href="http://wiki.python.org/moin/ConfigurationAndBuildTools">pyghon构建工具</a> 可以选择.</p>
+          </li>
+          </ul>
+          </div>
+          <div class="section" id="id2">
+          <h1>安装</h1>
+          <ul class="simple">
+          <li>debian源:</li>
+          </ul>
+          <pre class="literal-block">
+          sudo apt-get install scons
+          </pre>
+          <ul class="simple">
+          <li>或者直接在安装了python的环境里面easy_install:</li>
+          </ul>
+          <pre class="literal-block">
+            eays_install scons
+          
+          对了, 如果在windows下面, easy_install安装后有可能出现: import error: 找不到Scons.Script.
+          我研究了一下, 发现在scons放的位置不对, 只要搜索下把scons的目录放到dist-packages文件夹里面就好了.
+          </pre>
+          </div>
+          <div class="section" id="id3">
+          <h1>一个简单的示例</h1>
+          <p>我们直接去看一个示例吧, 目标是编译一个hello world c程序:</p>
+          <div class="highlight"><pre><span class="c"># 新建一个目录</span>
+          rm t1 -rf; mkdir t1; <span class="nb">cd </span>t1
+          
+          <span class="c"># 这里是我们的程序</span>
+          cat &gt; hello.c <span class="s">&lt;&lt;EOF</span>
+          <span class="s">#include &lt;stdio.h&gt;</span>
+          <span class="s">int main(){</span>
+          <span class="s">    printf(&quot;hello, world!\n&quot;);</span>
+          <span class="s">    return 0;</span>
+          <span class="s">}</span>
+          <span class="s">EOF</span>
+          
+          <span class="c"># scons的脚本文件名称是SConstruct/Sconstruct/sconstruct, 如果直接执行scons, 会按照上面的顺序找文件. 和make类似.</span>
+          cat &gt; sconstruct <span class="s">&lt;&lt;EOF</span>
+          <span class="s"># sconstruct其实就是一个python脚本, 支持所有python能做的事情.</span>
+          <span class="s">BIN = &#39;hello&#39;</span>
+          <span class="s"># scons和其他构建工具一样, 是定义式的, 我们定义需要构建一个程序, 名称是BIN, 依赖hello.c</span>
+          <span class="s">Program(BIN, [&#39;hello.c&#39;])</span>
+          <span class="s"># 然后, 我们再定义一个执行的命令, 方便看结果. 它依赖BIN, 方法就是直接执行这个程序.</span>
+          <span class="s">Command(&#39;run&#39;, BIN, &#39;./&#39;+BIN)</span>
+          <span class="s">EOF</span>
+          
+          <span class="c"># 最后, 我们调用scons来执行run的命令.</span>
+          scons run
+          </pre></div>
+          <p>这里是结果:</p>
+          <div class="highlight"><pre>scons: Reading SConscript files ...
+          scons: <span class="k">done </span>reading SConscript files.
+          scons: Building targets ...
+          gcc -o hello.o -c hello.c
+          gcc -o hello hello.o
+          ./hello
+          hello, world!
+          scons: <span class="k">done </span>building targets.
+          </pre></div>
+          <p>scons会自动根据文件来调用对应的构建工具.</p>
+          <p>上面只是一个示例, 更多的最好去看 <a class="reference external" href="http://www.scons.org/doc/production/HTML/scons-user.html">scons官方文档</a>. 文档有了我就不需要再写一遍了.</p>
+          </div>
+          <div class="section" id="id4">
+          <h1>我自己整理的一些重点</h1>
+          <p>我们可以构建:</p>
+          <ul class="simple">
+          <li>Program</li>
+          <li>Object</li>
+          <li>Library</li>
+          <li>SharedLibrary</li>
+          </ul>
+          <p>批量获取源文件:</p>
+          <div class="highlight"><pre><span class="n">Program</span><span class="p">(</span><span class="s">&#39;hello&#39;</span><span class="p">,</span> <span class="n">Glob</span><span class="p">(</span><span class="s">&#39;*.c&#39;</span><span class="p">))</span>
+          </pre></div>
+          <p>设置参数: LIBS, LIBPATH, CCFLAGS, CPPPATH</p>
+          <p>我们可以设置一个环境:</p>
+          <div class="highlight"><pre><span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">CC</span> <span class="o">=</span> <span class="s">&#39;gcc&#39;</span><span class="p">,</span>
+                            <span class="n">CCFLAGS</span> <span class="o">=</span> <span class="s">&#39;-O2&#39;</span><span class="p">)</span>
+          <span class="n">env</span><span class="o">.</span><span class="n">Program</span><span class="p">(</span><span class="s">&#39;hello.c&#39;</span><span class="p">)</span>
+          </pre></div>
+          <p>可以设置判断是否修改的算法:</p>
+          <div class="highlight"><pre><span class="c"># 默认采用算MD5的方法判断文件是否修改</span>
+          <span class="n">Decider</span><span class="p">(</span><span class="s">&#39;MD5&#39;</span><span class="p">)</span>
+          <span class="c"># 可以设置传统的看timestamp是不是最新的方式</span>
+          <span class="n">Decider</span><span class="p">(</span><span class="s">&#39;timestamp-newer&#39;</span><span class="o">/</span><span class="n">make</span><span class="p">)</span> <span class="c">#</span>
+          <span class="c"># 也可以设置只要timestamp变了就算文件被修改了</span>
+          <span class="n">Decider</span><span class="p">(</span><span class="s">&#39;timestamp-match&#39;</span><span class="p">)</span>
+          <span class="c"># 混合: timestamp改变了, MD5也变了才算修改了</span>
+          <span class="n">Decider</span><span class="p">(</span><span class="s">&#39;MD5-timestamp&#39;</span><span class="p">)</span>
+          </pre></div>
+          <p>可以根据Enviroment设置Decider</p>
+          <p>缓存判断依赖关系</p>
+          <div class="highlight"><pre><span class="n">SetOption</span><span class="p">(</span><span class="s">&#39;implicit_cache&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+          </pre></div>
+          <p>设置依赖关系</p>
+          <div class="highlight"><pre><span class="n">Depends</span><span class="p">(</span><span class="n">hello</span><span class="p">,</span> <span class="s">&#39;otherfile&#39;</span><span class="p">)</span>
+          <span class="n">Ignore</span><span class="p">(</span><span class="n">hello_obj</span><span class="p">,</span> <span class="s">&#39;hello.h&#39;</span><span class="p">)</span>
+          </pre></div>
+          <p>我最喜欢的, 执行自定义的命令:</p>
+          <div class="highlight"><pre><span class="n">Command</span><span class="p">(</span><span class="s">&#39;hello.o&#39;</span><span class="p">,</span> <span class="s">&#39;hello.c&#39;</span><span class="p">,</span>
+                  <span class="p">[</span><span class="s">&#39;gcc $SOURCE -c&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;wc -l $SOURCE &gt;&gt; summary&#39;</span><span class="p">])</span>
+          </pre></div>
+          </div>
+          <div class="section" id="id5">
+          <h1>结论</h1>
+          <p>看起来scons还是有点意思的, 我先用一段时间, 等有了一定的感觉之后再来看看.</p>
+          </div>
+          <div class="section" id="id6">
+          <h1>资源</h1>
+          <ul class="simple">
+          <li><a class="reference external" href="http://www.scons.org/doc/production/HTML/scons-user.html">scons官方文档</a></li>
+          </ul>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2010/12/06 23:10:00</p>
+          <p>更新时间: 2011/02/25 11:20:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog" target="_blank">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>
