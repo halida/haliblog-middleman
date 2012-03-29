@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'middleman'
+gem 'middleman', "~> 2.0"
 gem 'haml'
 gem 'data_mapper'
 gem 'sqlite3'
@@ -13,4 +13,4 @@ gem 'execjs'
 gem 'therubyracer'
 gem 'thin'
 
-
+gem 'coffee-filter'
