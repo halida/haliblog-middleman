@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+  <title>网络寻租</title>
+  <link>http://blog.linjunhalida.com/</link>
+  <description><![CDATA[网络寻租]]></description>
+  <language>zh-cn</language>
+  <copyright>&amp;copy; 2010, linjunhalida.</copyright>
+  <pubDate>2012-03-13T23:00:00+00:00</pubDate>
+  <item>
+    <title>rspec</title>
+    <link>http://blog.linjunhalida.com/article/rspec</link>
+    <content:encoded>
+    <div class="document">
+    <img alt="https://www.rapleaf.com/images/developers/open_source/rspec.gif" class="align-center" src="https://www.rapleaf.com/images/developers/open_source/rspec.gif" />
+    <p>我现在在做的 <a class="reference external" href="http://gurudigger.com">GuruDigger</a> 项目一直没有用测试框架, 最近我做了几次大的重构, 结果出现了许多bug, 为了能够保证以后项目不会在重构中挂掉, 我还是需要把测试给整起来.</p>
+    <p>rails的测试框架用得比较多的是rspec.</p>
+    <div class="section" id="rspec">
+    <h1>rspec的原理</h1>
+    <p>我们有一段代码:</p>
+    <div class="highlight"><pre><span class="k">def</span> <span class="nf">exp</span> <span class="n">number</span> <span class="n">n</span>
+      <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+      <span class="n">n</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span><span class="p">{</span><span class="n">result</span> <span class="o">*=</span> <span class="n">number</span><span class="p">}</span>
+      <span class="n">result</span>
+    <span class="k">end</span>
+    </pre></div>
+    <p>我们需要给出一个单元测试. rspec的写法是这样的:</p>
+    <div class="highlight"><pre><span class="n">describe</span> <span class="n">exp</span> <span class="k">do</span>
+      <span class="n">it</span> <span class="s2">&quot;should work&quot;</span> <span class="k">do</span>
+        <span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">8</span>
+        <span class="n">exp</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">125</span>
+        <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    </pre></div>
+    <p>我们来解释一下. 里面的describe和it是什么意思呢? rspec里面的测试是采用描述性的方式进行的. describe说明具体描述的是什么东西, it指代这个东西它的行为应该是怎么样. 上面的代码一方面做好了测试, 另外一方面也直观地描述了这个方法需要做的事情, 符合人类直觉.</p>
+    <p>然后, 我们看具体验证的部分. 和其他单元测试框架的 assert_equal 函数不同, rspec-expectations 修改了Kernel, 给了一个should方法. 这样让原先的外层函数调用, 变成了内层的方法调用, 造成的结果就是写起来超级直观. 这个算是ruby比较常用的套路了.</p>
+    <p>should的写法可以去看 <a class="reference external" href="https://github.com/rspec/rspec-expectations">rspec-expectations的文档</a>.</p>
+    <p><a class="reference external" href="https://github.com/rspec/rspec-mocks">https://github.com/rspec/rspec-mocks</a> 这一块不太容易懂, 需要看看.</p>
+    </div>
+    <div class="section" id="factory-girl">
+    <h1>factory_girl</h1>
+    <p>factory_girl是取代rails默认生成测试数据的yml格式的一种写法, 原生ruby, 写起来比较舒服和能够嵌入ruby代码.</p>
+    <div class="highlight"><pre><span class="c1"># 定义一个对象</span>
+    <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+      <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+        <span class="n">first_name</span> <span class="s1">&#39;John&#39;</span>
+        <span class="n">last_name</span>  <span class="s1">&#39;Doe&#39;</span>
+        <span class="n">admin</span> <span class="kp">false</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    
+    <span class="c1"># 用到的时候build一下就好.</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+    </pre></div>
+    <p>网上也有很详细的教程:</p>
+    <p><a class="reference external" href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md</a></p>
+    </div>
+    <div class="section" id="rspecrails">
+    <h1>rspec和rails整合</h1>
+    <p>上面是rspec做测试的部分, 下面我们看如何和rails整合. 其实文档都全了, 我觉得大家还是直接去看官方的文档就好:</p>
+    <p><a class="reference external" href="https://github.com/rspec/rspec-rails">https://github.com/rspec/rspec-rails</a></p>
+    <p>重点是测试的几个类型.</p>
+    </div>
+    <div class="section" id="rspecspork">
+    <h1>rspec加上spork</h1>
+    <p>rspec跑一遍下来超级慢, 于是就有了 <a class="reference external" href="http://spork.rubyforge.org/">spork</a> 这样的东西. 原理就是先跑一个服务器, 加载好对应的环境. 然后需要执行测试的时候, 就通知这个服务器开始测试. 服务器会fork一下, 执行对应的测试.</p>
+    <p>如何使用上面的文档都有. 重点是几步:</p>
+    <ul class="simple">
+    <li>用spork --bootstrap初始化spec_helper.rb, 把每次fork需要做的事情填到对应的方法里面去.</li>
+    <li>跑服务器, 执行spork</li>
+    <li>跑测试. 执行rspec --drb</li>
+    </ul>
+    </div>
+    <div class="section" id="id1">
+    <h1>配置</h1>
+    <p>这里有别人贴出来的配置, 还是挺复杂的, 需要搞搞清楚. 但是搞清楚了, 开发起来你会发现非常舒服(前提是你的机器够好...)
+    <a class="reference external" href="https://gist.github.com/1191428">https://gist.github.com/1191428</a></p>
+    </div>
+    <div class="section" id="id2">
+    <h1>一些资料</h1>
+    <p>rspec书籍:
+    <a class="reference external" href="http://pragprog.com/book/achbd/the-rspec-book">http://pragprog.com/book/achbd/the-rspec-book</a></p>
+    <p>rspec cheetsheet:
+    <a class="reference external" href="http://cheat.errtheblog.com/s/rspec/">http://cheat.errtheblog.com/s/rspec/</a></p>
+    <p>capybara cheetsheet:
+    <a class="reference external" href="https://gist.github.com/428105">https://gist.github.com/428105</a>
+    <a class="reference external" href="http://cheat.errtheblog.com/s/rspec_shoulda/">http://cheat.errtheblog.com/s/rspec_shoulda/</a></p>
+    <p>rspec最佳实践:
+    <a class="reference external" href="http://eggsonbread.com/2010/03/28/my-rspec-best-practices-and-tips/">http://eggsonbread.com/2010/03/28/my-rspec-best-practices-and-tips/</a></p>
+    </div>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2012-03-13T23:00:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>guard</title>
+    <link>http://blog.linjunhalida.com/article/guard</link>
+    <content:encoded>
+    <div class="document">
+    <img alt="http://livereload.com/images/LiveReload_350.png" class="align-center" src="http://livereload.com/images/LiveReload_350.png" />
+    <div class="section" id="id1">
+    <h1>介绍</h1>
+    <p><a class="reference external" href="https://github.com/guard/guard">guard</a> 是一个自动监控文件夹变更, 执行特定操作的工具. 如果你有这样的需求, 就可以用它.</p>
+    <p>guard可以和rails整合, <a class="reference external" href="http://railscasts.com/episodes/264-guard?view=asciicast">这里</a> 是介绍.</p>
+    </div>
+    <div class="section" id="id3">
+    <h1>使用方法</h1>
+    <p>比如, 简单地监控当前文件夹里面的变更, 如果变了就重新编译一下,
+    我们先装好一个插件: guard-rake
+    新建一个文件夹,里面2个文件:</p>
+    <p>Guardfile :</p>
+    <pre class="literal-block">
+    guard 'rake', :task =&gt; 'default' do
+      watch(/(.*)/)
+    end
+    </pre>
+    <p>Rakefile:</p>
+    <pre class="literal-block">
+    task :default do
+      sh 'cpp xxx.c -o hello'
+      sh './hello'
+    end
+    </pre>
+    <p>然后在这个文件夹里面执行:</p>
+    <pre class="literal-block">
+    guard
+    </pre>
+    <p>每次这个文件夹里面出现了文件变更, 就会重新执行一下default, 编译执行一下代码, 省去了每次自己点击的操作了.</p>
+    </div>
+    <div class="section" id="id4">
+    <h1>原理</h1>
+    <p>我们使用一个工具的时候一般来说最好还是需要知道一下这个工具的基本工作原理, 不然遇到问题的话也比较好解决.</p>
+    <p>底层根据操作系统采用对应的文件系统监控API(Listener). 在linux下面是调用 <a class="reference external" href="http://en.wikipedia.org/wiki/Inotify">inotify</a>.</p>
+    <p>guard的插件, 需要继承Guard, 实现run_on_change/initialize/start/stop 这些API就可以了.</p>
+    <p>guard本身定义了一套DSL. 在Guardfile里面写的东西, 就会连接到对应的插件上面去. 比如上面的例子, guard 'rake', 下面就会调用guard-rake写的一个插件定义类.</p>
+    </div>
+    <div class="section" id="livereload">
+    <h1>livereload</h1>
+    <p>guard有各种各样的插件, 这里介绍一个神奇的livereload. 它的作用是:</p>
+    <p>在做rails开发的时候, 每次更新了一个源文件, 我们需要手动去刷新一下网站页面. 它能够让你的网页自动刷新.</p>
+    <p>原理:</p>
+    <p>guard维护一个本地的服务器. 网页内嵌有一个js, 连接上这个服务器.</p>
+    <p>当修改文件的时候, guard能够获知修改, 通知所有连上来的客户端, 本地有更新. js接收到更新, 会去自动刷新网页.</p>
+    <p>具体安装需要几个:  <a class="reference external" href="https://github.com/guard/guard-livereload">guard-livereload</a> 作为guard插件. <a class="reference external" href="https://github.com/johnbintz/rack-livereload">rack-livereload</a> 作为rails rack的一个中间件, 用来嵌入livereload的js.</p>
+    </div>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2012-03-11T17:32:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>方舟子打韩寒事件我见</title>
+    <link>http://blog.linjunhalida.com/article/方舟子打韩寒事件我见</link>
+    <content:encoded>
+    <div class="document">
+    <img alt="http://www.rwabc.com/rwheadphoto/554.gif" class="align-center" src="http://www.rwabc.com/rwheadphoto/554.gif" style="width: 600px;" />
+    <p>最近闹得沸沸扬扬的方舟子事件, 到现在也没有结束. 我从一开始就关注这件事情, 整体经过的的观感也随着事件的进行经历了大的变化. 从这件事情反映出来了很多问题, 我觉得有必要整理一下.</p>
+    <div class="section" id="id1">
+    <h1>我的看法</h1>
+    <p>首先, 表示一下我的看法. 麦田文章出来的时候, 我随便看看, 文章列出了一些相关的数据, 就推导出来&quot;韩寒代笔&quot;的结论.</p>
+    <p>他认为, 韩寒代笔能够解释这些数据, 但是我觉得, 更有说服力的解释是, 这些数据是挑出来的巧合. 因此我感觉这是一个阴谋论文章(资深网民了, 我几乎可以根据用词和语气判断一篇文章的不靠谱程度).</p>
+    <p>我以为不会引起什么大的风浪, 在我看来, 这么明显的阴谋论文章, 大家只会当一个笑话看. 结果相反. 韩寒积极从博客回应, 这件事情也开始热了起来. 当然, 最后还是有人分析出如何炮制阴谋的, 然后麦田道歉结束.</p>
+    <p>本来这件事情就应该结束了, 结果方舟子被卷入到这件事情中来了. 具体是韩寒开始质疑方舟子脱发和小孩是不是亲生的(实在是骂人不带脏字, 我觉得过分了).
+    我原先只是知道方舟子只是一个打假斗士, 并不是很了解他. 方舟子被骂之后, 就开始动大手笔查韩寒代笔的事情.</p>
+    <p>方舟子一开始就是做他说的&quot;文本分析&quot;, 找一些马脚, 从我的感觉来说, 这完全是胡搅蛮缠, 因为我那个时候觉得, 文学本来就是虚构的事情, 而去找小漏洞, 不能成为充分的解释.
+    就算你能提出小说中无数内容能够猜测作者是一个中年人, 那么只是猜测而已, 韩寒为什么就不能写出来这样的文章?
+    至此, 我认为方舟子秀逗了. 可能是神志不太清楚, 或者不肯承认错误.</p>
+    <p>但是后来有一篇 模仿福尔摩斯的文章出来, 让我改变了看法.
+    里面提供了一个关键性的证据: 任何事物的发展, 是有时间脉络的, 不会突然产生和突然消失. 如果韩寒是一个能够写出三重门作品的作家, 那么现在他的水平也不会差到哪里去.
+    但是事实是, 韩寒现在的文章, 完全体现不出三重门时期的素质.</p>
+    <p>之后, 我才真正去调查方舟子的历史. 让我感到大吃一惊. 福建省文科状元, 中学开始写诗, 大学办诗社, 出国后建立最早的中文文学网站之一: 新语丝网站.
+    认为方舟子是理科生的人可以歇歇了, 去看看他的文集: <a class="reference external" href="http://www.xys.org/fang/works.html">http://www.xys.org/fang/works.html</a>, 看看水平是不是自己想象中的那样.
+    对了, 方舟子还是&lt;侠客行&gt;游戏的主要开发者. 如果知道这款游戏的人应该非常惊讶吧.</p>
+    <p>我知道了他是这样的一个神奇的人. 然后我又去看他的文章, 发现写的文章挺不错的, 有一种崇尚理性和真理的感觉. 我不觉得能够写出这样文章的人会做出多么下做的事情. 如果有的话, 那么这个人会一直下做下去, 人是有一致性的.</p>
+    <p>让我们回到韩寒代笔这件事情, 来看看:</p>
+    </div>
+    <div class="section" id="id2">
+    <h1>韩寒代笔的证据列表</h1>
+    <p>总体来说, 现在已经挖出来的证据非常多, 虽然没有直接代笔的证据, 但是在那么多的辅助证据下面, 基本上确定了韩寒代笔的事实. 我列举一下:</p>
+    <p>关键证据:</p>
+    <ul class="simple">
+    <li>韩寒早期的文章和后面的文章风格不一致, 文笔出现大幅度退化.
+    大家如果看过三重门, 会知道文字是雕琢过的, 并且引经据典, 但是现在的文章就完全是白话, 差异很明显. 最近出来微博私信, 就是小学生水平.
+    文笔这个东西, 我不觉得会退化得那么严重.</li>
+    <li>韩寒的视频资料完全体现不出作家水平, 不谈论自己的作品, 语言粗俗.
+    作家如果没有读过很多书, 至少也是思考过很多东西的人吧, 被问到对女性的要求的时候, 怎么说得出&quot;活好&quot;这样的话?
+    作家一个非常主要的工作是雕琢文字, 虽不能说是出口成章, 至少也会在说话的时候考虑用词. 韩寒的话语中完全体现不出应有的素质. 甚至说话还有些不利索.</li>
+    <li>韩寒失口说文章不是自己写的. 可google.
+    <a class="reference external" href="http://v.ku6.com/show/qjMQ8uIzy-VbS8Vn3zXS5g...html">http://v.ku6.com/show/qjMQ8uIzy-VbS8Vn3zXS5g...html</a></li>
+    <li>韩寒自己说代笔. 有视频为证.
+    <a class="reference external" href="http://tianya.8684.cn/art201202_1_2_74404.htm">http://tianya.8684.cn/art201202_1_2_74404.htm</a></li>
+    <li>拿不出能够代表创作思路的文稿证明.
+    在方舟子质疑下, 韩寒给出来长篇小说的文稿. 但是文稿没有什么改动. 被质疑是抄稿.
+    我就算是写这篇文章, 也改动得非常频繁, 我不太相信一个普通人能够写长篇小说的时候, 能够做出很少的改动,
+    就算是文学天才, 也会有学习曲线, 在后期才能达到这样的水平.</li>
+    </ul>
+    <p>可疑证据:</p>
+    <ul class="simple">
+    <li>韩寒状告方舟子, 而不是出来澄清, 更没有当众展示才华.
+    正常的反应应该是出来正面对阵质疑.</li>
+    <li>韩寒父子做视频的时候, 非常紧张. 视频地址忘了...
+    连记者都看出来了, 让韩寒不要那么紧张.</li>
+    </ul>
+    <p>这些事实出来, 我基本认为韩寒代笔的事实成立.</p>
+    <p>上面是我的看法. 很多人看过上面这些证据, 还是会认为韩寒没有代笔. 我这里说一下我思考的逻辑, 以及为什么要这样认为.</p>
+    <p>我这里先岔一下, 讲讲什么是科学. 可能有人觉得完全不相关, 但是且看我慢慢道来.</p>
+    </div>
+    <div class="section" id="id3">
+    <h1>我理解的科学</h1>
+    <p>大家对科学的认识普遍不深, 我这里提出一下我的看法(其实也是看方舟子破解科学之谜那本书前言部分: <a class="reference external" href="http://vip.book.sina.com.cn/book/index_42849.html">http://vip.book.sina.com.cn/book/index_42849.html</a>)</p>
+    <ul>
+    <li><p class="first">科学是为了能够认识世界, 解释世界, 而提出来的方法论.</p>
+    <p>很多人认为科学是像宗教一样, 相信科学就是相信科学的理论(比如牛顿力学), 其实完全不对.
+    真正信奉科学的人, 在遇到现有的科学理论不能解释的事实的时候, 只会更兴奋. 因为分析清楚这个想象之后, 能够更好地理解这个世界. 整个科学史就是这样过来的.
+    只有宗教和迷信才会让人在遇到不符合理论的事实的时候, 忽视事实.
+    举个例子, 有人说, 科学不能解释鬼之类神秘的现象. 其实如果是真的科学家, 会期望真的能够见到鬼, 进而对鬼进行分析. 但是很可惜,
+    历史上面很多科学领域的人投入去研究, 都没有观测到真正的鬼.</p>
+    </li>
+    <li><p class="first">根据观察到的现象, 给出可以被证伪的理论模型. 理论模型能够解释绝大部分的事实. 不能因为新出现的事实, 而做出大的修改.
+    以前古代人用神话来解释现象. 但是问题是神话是不可被证伪的, 并且新的现象出现的时候, 又会对神话进行修正. (比如加上新的神, 和给神加上新的脾气).
+    为了能够解释现象, 提出来的理论必须要能够说明新出现的事实, 要有错的可能性, 不然这个理论有什么用?</p>
+    </li>
+    <li><p class="first">理论模型要足够简化, 奥卡姆剃刀是也.
+    理论应该选择简单的那个. 一个非常复杂, 甚至比现象还复杂的理论, 是比不上简单理论的. 因为简单理论会更接近事实运作的原理.</p>
+    </li>
+    </ul>
+    <p>让我们回到韩寒代笔事件来. 方舟子提出来的也是一个理论模型, 就是利用&quot;韩寒代笔&quot;这个理论来解释现象. 我们来看一下是否符合要求.</p>
+    <ul class="simple">
+    <li>韩寒代笔可以被证伪的.
+    只要韩寒出来针对自己的作品大说一通, 或者和方舟子出来对阵, 解释他提出来的疑点, 那么这个理论就能够被证伪(或者有这样的历史资料).</li>
+    <li>韩寒代笔能够解释所有的现象.
+    能够解释清楚我们现在所有的事实.</li>
+    <li>韩寒代笔这个解释比其他的理论简单.
+    针对上面韩寒出来解释就能反驳代笔的例子, 有人会说, 韩寒不出来自证, 是因为害羞或者不屑. 遇到&lt;求医&gt;那篇文章里面的处处疑点, 都指出反例.
+    但是问题这样的理论很复杂, 要出现无数巧合才能成立. 而&quot;韩寒代笔&quot;这个解释非常简单又有解释力.</li>
+    </ul>
+    <p>方舟子按照上面的科学方法论, 提出来了韩寒代笔的理论.</p>
+    <p>有人会说, 就算上面这些证据出来, 都不能完全说明代笔是存在的. 就现在而言,</p>
+    <p>&quot;韩寒代笔&quot;这个理论能够很好地符合现实. 并且没有出现任何能够证伪的证据. 并且能够非常好地解释所有的疑点.</p>
+    <p>那么在韩寒出来把代笔这件事情证伪之前, 我就接受&quot;韩寒代笔&quot;这个理论. 不过, 韩寒好像现在去搞乐队去了?</p>
+    <p>让我们到另外一个问题, 方舟子. 因为这件事情, 很多人对方舟子都有恶感. 认为方舟子这样做, 是&quot;文革整风&quot;, 没有人能够经受得起这样的冲击, 认为方舟子这样的人要不得, 认为他是&quot;疯狗&quot;一样乱咬人.</p>
+    <p>我来针对上面这些点, 来做一些解释.</p>
+    </div>
+    <div class="section" id="id4">
+    <h1>方舟子没有踩过线, 以及方舟子的存在是有必要的</h1>
+    <ul>
+    <li><p class="first">方舟子乱咬人的问题.
+    很多人因为方舟子到处打假, 认为他是&quot;疯狗&quot;, 乱咬人.
+    我来提出另外一种解释. 那么就是, 方舟子只是看起来像是在&quot;乱咬&quot;, 其实是只打有问题的人.
+    两者看起来现象类似, 但是本质不同. 乱咬人的是疯狗, 打有问题的人是方舟子.</p>
+    <p>方舟子打的人, 都是发现疑点的人. 最后疑点被证实, 对方被打倒.
+    并且方舟子针对的是公众人物, 以及会带来危害的人物.</p>
+    </li>
+    <li><p class="first">方舟子为什么要打假? 居心何在?
+    我们知道有些人是没有见过好人的, 也没有见过为了公众事业奉献的人.
+    那么不能理解世界上为什么还有这样的人. 这个只能是见识的问题了.
+    我要说, 如果方舟子不是沽名钓喻, 方舟子这样的人真的存在, 是可以理解的.</p>
+    </li>
+    <li><p class="first">有罪推定
+    很多人说, 方舟子是有罪推定, 首先认为韩寒是有问题的, 然后才去找证据. 而事实上应该支持的是无罪推定, 我们应该先接收韩寒是无罪的, 在证据不充分的情况下不接受这个理论.
+    我不同意这个说法. 无罪推定大家家喻户晓, 但是也有适用环境, 是在法庭对一个人定罪的时候.
+    如果定罪有误, 这件事会对当事人造成无法挽回的伤害, 法律体系的权威会受到更大的伤害(人们会倾向于不相信法律了),
+    但是在言论领域相反. 如果有罪推定, 因为质疑者需要提出很有说服力的证据才能质疑, 造假者的成本会降得很低, 那么整个社会会充斥造假者(现在中国很大程度上是这样), 应该适用有罪推定.
+    我举一个例子. 大家生活中遇到一个人和自己做生意, 发现他可疑, 大家是用无罪推定还是有罪推定? 韩寒就是这样的生意人, 他卖作品. 发现有疑点, 大家是买还是不买?</p>
+    </li>
+    <li><p class="first">方舟子是否有权利质疑?
+    有看法是这样的: 作家是否代笔, 是个人的事情, 方舟子质疑是非常不礼貌的事情.
+    韩寒因为&quot;文学天才&quot;的名声出名, 他获取了很多的好处(出书, 做广告.), 文章是否代笔这件事情不再是私人的事情了, 因为如果有代笔, 那么是对正当写文章的作者的伤害, 也是对读者的欺骗. 有必要接受质疑.
+    比如如果一个和我无关的人, 过来质疑我的工作能力, 我认为是人身攻击, 可以不予理会. 但是如果我的工作单位质疑我的工作能力, 我有证明自己工作能力的义务, 而不能回避.</p>
+    </li>
+    <li><p class="first">方舟子和文革整风, 文字狱的区别.
+    文革整风和文字狱, 基本上都动用了暴力机器, 用武装对当事人造成了伤害.
+    方舟子是在公共领域里面发出声音. 并没有伤害到当事人的权利. 并且对方也是公众人物, 有平台可以反驳质疑.
+    有人说, 伤害到对方出书的销量. 买书是读者自己下判断的, 不是方舟子能强迫的事情. 并且方舟子不是直接造谣说韩寒代笔, 而是提出事实.</p>
+    </li>
+    <li><p class="first">无数不靠谱的推理, 是人身攻击
+    我认为, 在做分析的时候, 为了能够证明需要到达的目标, 会走无数的路径, 其中有很多都是有问题的. 就像在证明过程中, 会考虑无数的中间步骤.
+    这样, 方舟子会出现很多不靠谱的假设. 我认为这个是在证明过程中必须要经过的, 不可能一步就出来一个铁证. 我只要从这些分支的分析中可以看出来不靠谱, 就会不接受这些推理.
+    比如方舟子提出的&quot;高考不可能上课睡觉&quot;, &quot;&quot; 这些事实就非常不靠谱, 针对这些事实的推理我也不接受.
+    但是只要有一条路走通, 那么逻辑证明和事实的支持下, 就算结论再匪夷所思, 我也接受这个推理.</p>
+    <p>因为这些分析是必要的, 我不认为方舟子有必要出来针对这些分析过程道歉. 还有, 我觉得, 只针对韩寒这件事情, 如果分析来分析去没有疑点, 也不应该道歉.
+    因为大家会对他的公信力产生质疑, 并且韩寒能够在这样的分析下&quot;活&quot;下来, 只会获得更多的名声.
+    如果质疑带来很严重的后果(当事人之后没有获得声誉上的补偿, 或者因此受到很严重的损害), 而质疑又没有结论的话, 是应该出来道歉的.</p>
+    </li>
+    <li><p class="first">方舟子为什么不去打官员? 打假的方式能不能换换?
+    一个人的做事方式是他自己考虑到最有效的解决方式, 我觉得其他人不太好在这点上过于要求.</p>
+    </li>
+    <li><p class="first">方舟子到处打假不烦吗? 能不能不要出来了?
+    方舟子打假能够让这个社会少点假, 多点真. 受到恩惠的人还不自知, 要求别人消声, 我都不知道说什么好了...</p>
+    </li>
+    <li><p class="first">方舟子收入来源很可疑?
+    他有主要职业, 是科普作家. 这里是他的作品. 并且在一些媒体上面有专栏. 我认为, 一个知名的能够写东西的人物的稿费收入和出场费还是能够养活自己一家的.</p>
+    </li>
+    <li><p class="first">方舟子支持转基因, 祸害子孙万代.
+    这个是对转基因不了解, 这里有方舟子的解释: <a class="reference external" href="http://zone.tudou.com/publicc02/">http://zone.tudou.com/publicc02/</a> 从原理上面说明清楚了问题.
+    反对转基因的理论有谁提出合理的理论的?</p>
+    </li>
+    </ul>
+    </div>
+    <div class="section" id="id5">
+    <h1>结论</h1>
+    <p>上面是我对整件事情看法的整理. 如果还有什么有疑问的地方, 请通知我, 我补上. 看法大家自己保留. 因为大家的认知水平不一样, 争论也争论不出来什么有价值的东西.</p>
+    <p>还有就是, 很多人看这件事情用到了感情, 甚至出现了移情(同为作家的身份). 我是看具体的事实, 然后被事实说服了. 如果有新的事实出来, 我会推翻看法.</p>
+    </div>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2012-03-06T20:39:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>javascript_web_applications_读书笔记</title>
+    <link>http://blog.linjunhalida.com/article/javascript_web_applications_读书笔记</link>
+    <content:encoded>
+    <div class="document">
+    <p>这几天抽空把 <a class="reference external" href="http://book.douban.com/subject/6805476/">javascript web applications</a> 这本书看完了, 整理一下学到的东西.</p>
+    <p>在我看来, 整本书主要内容就是讲如何抽象js前端开发, 让代码变得更清晰. 具体采用的手法是在js里面实现class, MVC, module等抽象.</p>
+    <p>整理整理一下我觉得对我来说重要的知识点:</p>
+    <ul class="simple">
+    <li>context switch.
+    js里面, new会转换context, 各种回调函数里面context会有变化, 具体影响到的是this以及环境变量.
+    要利用到jQuery里面的proxy(底层调用apply等)来做context switch.</li>
+    <li>js是prototype的语言, js里面实现继承, 需要通过递归调用prototype.</li>
+    <li>很多封装的技巧, 有种lisp的感觉. 看起来成为一个靠谱的js程序员需要掌握这些技巧了.</li>
+    <li>MVC模型, 这个也不需要多说了, 都用烂了, 只要提一下大家就会注意了. Controller里面负责联系model和view, UI事件处理之类的事情.</li>
+    </ul>
+    <p>对我来说比较有用资源的索引:</p>
+    <ul class="simple">
+    <li>利用前端实现MVC</li>
+    <li>实现module以及对应的依赖关系</li>
+    <li>file, drag&amp;drop等的API实现</li>
+    <li>前端开发需要考虑的: performance, cache</li>
+    <li>浏览器调试方面的一些工具: profile, logging</li>
+    <li>一些前端MVC库的介绍: spine, backbone, javascriptMVC</li>
+    </ul>
+    <p>我自己比较不足的地方, 可以在接下来的开发工作中提高的有:</p>
+    <ul class="simple">
+    <li>针对MVC的理解, 重构现有的程序.</li>
+    <li>考虑使用一些前端的UI库.</li>
+    <li>performance, profile, logging, 用它们来提高现有前端代码的性能.</li>
+    </ul>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2012-02-26T19:16:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>人民广场英语角参加小记</title>
+    <link>http://blog.linjunhalida.com/article/人民广场英语角参加小记</link>
+    <content:encoded>
+    <div class="document">
+    <img alt="http://img.club.pchome.net/upload/club/other/2008/2/16/pics_andna_1203166311.jpg" src="http://img.club.pchome.net/upload/club/other/2008/2/16/pics_andna_1203166311.jpg" style="width: 600px;" />
+    <div class="section" id="id1">
+    <h1>起因</h1>
+    <p>上上周我锻炼的时候, 路过了人民广场, 发现在一个角落里面, 不太像相亲角, 因为有男有女, 大多都是年轻人. 问了一个人, 发现竟然是英语角.
+    我在这里留了一段时间, 稍微练习了一下, 主要是我介绍了一点最近学习到的东西(哈佛幸福课).</p>
+    <p>回去之后, 我觉得既然我住在南京西路, 可以利用好这个场所, 达到练习英语口语, 练习演讲, 找妹子的目的.</p>
+    </div>
+    <div class="section" id="id2">
+    <h1>经过</h1>
+    <p>今天下午, 我有时间再次去英语角. 今天去的时候, 收获比较多, 主要是遇到几个有意思的人.</p>
+    <p>首先是一个日本人. 我不经意的时候聊上的. 没有看出来是日本人. 他19岁, 爸爸是上海人, 妈妈是日本人. 在这边短期待一周左右. 在日本 <a class="reference external" href="http://zh.wikipedia.org/wiki/%E6%85%B6%E6%87%89%E7%BE%A9%E5%A1%BE%E5%A4%A7%E5%AD%B8">慶應大学</a> 读书. 英语还算是能够用. 我刚刚到的时候自己还没有放开, 没有什么太多可以说的. 基本上就是听的份. 这个时候边上过来了几个人, 然后他们也会日语, 于是就开始说日语了, 我就在一旁安静地听了, 日语夹着英语, 算是勉强能够弄懂一点意思.</p>
+    <p>然后是第二个很有趣的人过来了. 他是一个老人家, 气色很好, 眼睛很有精神. 讨论的时候有提到, 他自己刚刚从瑞士回来, 会七八门语言. 是企业主, 有好几家公司, 日本一家旅游方面的公司. 他自己除了南美以外, 世界其他地方他都去过了. 并且计划在未来去南美. 用他自己的话说, &quot;push his employee work hard, and I can enjoy my life.&quot;(凭记忆大致是这个意思). 他也会写程序, 原先写java, 现在写C#, 用vs2010.</p>
+    <p>在讨论的时候, 他有说道, 慶應大学是个好学校, 创办者是 <a class="reference external" href="http://zh.wikipedia.org/wiki/%E7%A6%8F%E6%BE%A4%E8%AB%AD%E5%90%89">福泽谕吉</a>. 他说自己过来是为了能够看看各种有趣的人.</p>
+    <p>然后我们又讨论到日本的成长. 他说, 日本能够从一个农业国家, 成为这么强大的国家, 基本上靠的就是全盘西化, 掌握了西方的先进思想和技术. 福泽谕吉起到了最主要的过程. 他说日本人最尊敬的人, 就是他了. 他对东方文明和西方文明都有足够的了解, 后来写了著名的&lt;脫亞論&gt;, 推行全盘西化. (我觉得我有必要花时间去看这本书.).</p>
+    <p>这个老人家说, 文明是有层级的, 西方文明的层级比较高一些, 他们更好地对待人. 不像亚洲. 他说, 中国一直以来都是中学为体, 西学为用, (我补充到现在也是这样), 这样让中国变成现在这样.</p>
+    <p>他说, 学习各种语言是为了看各种语言背景下面的书, 了解更多, 第一手的资料. 能够看问题更全面. 他建议年轻人多看看书, 各种语言的书.</p>
+    <p>他说, 不要和其他观点的人争论, &quot;让他们保留自己的意见&quot;, 不过没有说为什么. 我现在比较年轻气盛, 发现一个道理, 就想要和别人灌输. 这样从以往经历上面, 被证明是没有效果的(尤其是对中国人), 反而恶化人际关系. 以后我要好好约束自己. 让他们保留自己意见吧, 东西自己知道就可以了.</p>
+    <p>后来这个老人家又说道, 有另外一个英语角, 外国人比较多, 在陕西南路和长乐路的星巴克, 每周六下午, 因为外国人比较多, 会靠谱一些. 下次我会去那边看看.</p>
+    <p>老人家说, 可以通过一个人的词汇量来看他的教育背景, 受过教育的外国人, 词汇量会很大, 然后英语角过来的外国人, 很多词汇量很低, 也就千把. 指了一个人给我. 他说, 可能年轻的时候就是一个jobless.</p>
+    <p>然后老人家时间差不多, 就走了. 我又发现第三个有趣的人. 一个小孩.</p>
+    <p>我去和小孩说话. 这个小孩8岁, 来这个英语角已经5年了. 说话很有条理. 估计也又是一个genius. 有谈到理想, 说是希望以后长大去哈佛, 希望自己成为一个艺术家(具体做什么职业, 等到大学阶段尝试), 思路非常清晰, 让我感到非常的佩服. 我觉得以后如果有小孩, 也可以考虑把小孩带到这样的英语角, 练习英语.</p>
+    </div>
+    <div class="section" id="id5">
+    <h1>结论</h1>
+    <p>总体来说, 来英语角, 能够遇到这些有趣的人, 算是不虚此行. 不过有趣的人不是那么容易遇到的, 下次注意要多接触一下再加入到聊天中去. 大家也可以尝试来参加这样的场合.</p>
+    </div>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2012-02-19T23:11:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>电脑是如何实现图形显示的</title>
+    <link>http://blog.linjunhalida.com/article/电脑是如何实现图形显示的</link>
+    <content:encoded>
+    <div class="document">
+    <p>今天去 <a class="reference external" href="http://www.shlug.org/?page_id=523">hacking thursday</a> 的活动, 听一位朋友介绍了一下关于电脑是如何处理图形显示的东西,
+    整体脉络清楚了一些, 趁着记忆没有消散, 这里稍微整理一下.</p>
+    <p>我们先从显示器说起. 显示器负责真正把图像呈现给我们, 一般现在我们的电脑显示器可以接收数字信号也可以接收模拟信号,
+    数字的一般用 <a class="reference external" href="http://en.wikipedia.org/wiki/Digital_Visual_Interface">DVI</a>, 模拟的一般 <a class="reference external" href="http://en.wikipedia.org/wiki/VGA_connector">VGA</a> 的接口.
+    传给显示器的数据不神奇, 就是图像数据流, 每个点拆分成RGB红绿蓝3原色的数值表示. VGA还要带的是 horizontal sync, vertical sync, 这个是水平和垂直扫描率,
+    就是每秒钟横竖扫描多少条, 就是我们说的屏幕分辨率再乘上没秒钟屏幕的刷新率.
+    这个数据丢给显示器, 显示器里面也有CPU, 负责控制屏幕把这样的数据显示出来, 也可能对这个数据做一点微调什么的, 比如我们显示器一般都有的对颜色位置亮度饱和度的调整.</p>
+    <p>要传给显示器的数据量是非常巨大的(根据屏幕尺寸), 也需要不断地传数据给显示器. 具体负责这些操作的是显卡.
+    现代的显卡要做相当多的事情. 不止是不间断地发送视频, 还会有渲染(3d游戏场景的渲染主要工作是交给显卡来做的), 视频数据解码等工作.
+    与上层的接口一般是通过显卡来读取特定的内存区块(DMA等方式)来实现. 简单地说, 告诉显卡, 主内存里面一个区块存放了需要显示的数据,  然后显卡自己过来取数据,
+    上层应用定时往这个内存区块放数据.</p>
+    <p>显卡会有自己的一些做事情的方式, 对于上层应用来说, 这些都是实现细节, 不需要知道. 显卡厂商会把功能抽象成opengl的API, 然后上层应用就调用这样的API即可.
+    在linux里面, Xwindow做的事情就是提供一个server/client的接口, 具体接口还是opengl.</p>
+    <p>然后我们到了更上层的gnome/kde, 它们是提供关于窗口绘制的api, 再往上面就是应用程序了, 调用gui的库来设置控件, 交互什么的.</p>
+    <p>如果上层应用需要直接发送显示的东西怎么办? 比如视频. 这个时候调用opengl的api, 申请一块内存区, 把渲染好的特定数据结构的图像放到这个内存区,
+    然后用opengl通知下层显示即可. 上层应用的进程需要控制刷新率, 一秒30桢的话就要刷30次, 如果应用是一个播放器的话, 可能需要多个线程,
+    一个线程用来做用户交互, 一个线程用来刷屏幕, 一个线程用来处理数据编码. 显卡也可以做解码的工作, 播放器可以控制显卡来解码,
+    这样显卡直接解码后写到显卡的缓存区块里面去.</p>
+    <p>具体技术细节非常复杂, 但是对于我来说, 对整体的过程有一个概念即可. 知道了原理就行了.</p>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2012-01-06T16:04:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>Metaprogramming_Ruby学习笔记</title>
+    <link>http://blog.linjunhalida.com/article/Metaprogramming_Ruby学习笔记</link>
+    <content:encoded>
+    <div class="document">
+    <p>虽然我现在一直在用ruby做rails开发, 但是ruby基本上是属于拿起来用的那种, 很多东西都不是很熟悉.</p>
+    <p>现在发现有一本Metaprogramming Ruby的书, 就看起来了. 这里整理一下学习笔记, 省得学了白学. 下面其实只是一些tips, 只是给我自己看看的. 所以大家就不要抱有什么期待了.</p>
+    <div class="section" id="id1">
+    <h1>星期一</h1>
+    <p>Ruby是全运行态, 没有编译态(对于程序员而言).</p>
+    <p>Class本身也能运行时创建.</p>
+    <p>Ruby里面的Class继承自Module, 多了一些实例化, 继承的东西.</p>
+    <p>所有Class的class是Class, Class继承Module继承Object继承BasicObject.</p>
+    <p>method的查找方式, 先看object, 然后查Class树, 中间会穿插class include的Module.</p>
+    <p>所有位置都隐含一个self, 调用方法就是把调用者当作self, irb默认self是main.</p>
+    <p>private的method只能被隐含self的方式调用, self.private_method是不能调用的.</p>
+    </div>
+    <div class="section" id="id2">
+    <h1>星期二</h1>
+    <p>obj.send(:my_method, 3) 用来做动态方法调用.</p>
+    <p>define_method用来动态定义方法.</p>
+    <p>method_missing用来处理找不到方法的时候的状况.</p>
+    <p>还有undef_method, 这些方法可以用来做很多有意思的事情了.</p>
+    </div>
+    <div class="section" id="id3">
+    <h1>星期三</h1>
+    <p>回顾了block和using.</p>
+    <p>scope在class, model, def这3个阶层. 可以用Class.new, Module.new, Module&#64;define_method动态生成.</p>
+    <p>有了instance_eval可以切换到object的scope里面去.</p>
+    <p>Proc, lambda可以保存block, &amp;用来转换Proc和block.</p>
+    <p>Proc里面return是从定义Proc的scope里面return, 这个太恶心了吧? 还有不严格判断参数. 还是用lambda比较好.</p>
+    </div>
+    <div class="section" id="id4">
+    <h1>星期四</h1>
+    <p>class 也是 module, 在它们的作用域里面执行代码, 用module_eval.</p>
+    <p>我有点明白为什么不用缩进来限制作用域了, 缩进没有明确限制作用域来得灵活.</p>
+    <p>def并不会开启一个新的scope, 还是在class的scope里面.</p>
+    <p>在class里面用&quot;&#64;&quot;定义instance variable, 用&quot;&#64;&#64;&quot;定义Class instance variable(真绕). 因为&#64;&#64;定义在类树里面, 容易产生bug, 不建议使用.</p>
+    <p>class method其实是singleton methods, 有趣.</p>
+    <p>每个object还有eigenclass. 用class &lt;&lt; obj; self end; 这样的方式访问.</p>
+    <p>加上eigenclass, ruby的类树就比较复杂了, 不过看图就好理解一些.</p>
+    <p>alias和alias_method创建别名.</p>
+    </div>
+    <div class="section" id="id5">
+    <h1>星期五</h1>
+    <p>binding用来缓存作用域, 给eval用. TOPLEVEL_BINDING是最上层的binding.</p>
+    <p>class里面有无数事件的hook, 比如inherited, included, method_added.</p>
+    <p>最后一部分activerecord用到的魔法, 我就稍微带过了, 因为具体的方法我兴趣不是很大.</p>
+    </div>
+    <div class="section" id="id6">
+    <h1>结论</h1>
+    <p>上面只是给我自己总结的一些tip, 一些我已经知道的东西, 但是对其他人非常重要的地方没有写出来. 所以需要理解的话大家还是看书吧.</p>
+    </div>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2012-01-01T22:31:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>2011年度总结</title>
+    <link>http://blog.linjunhalida.com/article/2011年度总结</link>
+    <content:encoded>
+    <div class="document">
+    <p>有好几个朋友都写了年度总结, 我想如果没有反思的话就没有成长, 也写写年度总结吧.</p>
+    <p>分几个方面, 工作上, 生活上, 情感上什么的.</p>
+    <div class="section" id="id1">
+    <h1>工作上</h1>
+    <p>我这一年大部分的时间都在 <a class="reference external" href="http://www.simaxtechnology.com">新漫传感</a> 这家公司工作. 今年11月底正式离职. 总共2年的时间.
+    我当时去到新漫的时候, 也是家里人朋友的介绍, 我也就去了. 总体上面来, 这份工作的自由度非常大, 任务其实也很明确. 闲暇时间非常多.
+    但是对于我来说是一个败笔. 在这家公司, 我做的事情没有什么可以说的(只是一份工, 不能让人对我做的事情眼前一亮, 更不能改变世界),
+    而公司也不能给我职业发展上面的支持, 而平时很多空闲时间, 我也没有充分利用起来. 在这里的2年是失败的.
+    不过我现在离职了, 算是止损了吧.</p>
+    <p>然后从今年的4月份左右, 我算是一直从事 gurudigger.com 的兼职工作, 从网站的重构到rails开始, 一直做到现在, 11月底正式加入进来.
+    虽然我一直从事编程工作, 但是现在才算是正式进入互联网圈了.</p>
+    </div>
+    <div class="section" id="id3">
+    <h1>生活</h1>
+    <p>2011年我的生活品质比以往高了一些. 至少生活中除了电脑, 网络, 游戏, 还多了很多东西.</p>
+    <p><a class="reference external" href="http://blog.linjunhalida.com/article/%E4%BA%BA%E4%BA%BA%E9%83%BD%E5%BA%94%E8%AF%A5%E6%8E%8C%E6%8F%A1%E4%B8%80%E9%97%A8%E4%B9%90%E5%99%A8">今年决定开始练习钢琴</a>,
+    花了钱上了10节课, 本来期望能够每天半个小时的练习时间, 现在慢慢地落下来了. 这个与我期望不符. 我还是决定1/1开始, 每天半小时的练习时间. 然后能练多久就多久.</p>
+    <p>锻炼身体的项目一直在草拟当中, 夏天的时候还是游过一段时间的泳, 不过现在没有坚持, 一个是锻炼身体比较枯燥, 一个就是感觉比较浪费时间.
+    枯燥好解决(比如从跑步换做有氧健身操), 感觉浪费时间是我观念上面的问题, 解决起来就比较麻烦了. 但是这件事情一定要开始做起来. 时间也应该是一辈子.</p>
+    <p>线下组织python定期聚会活动. 我原先是希望大家做技术的人士能够出来多聚聚. 忘记什么时候我开始号召大家出来聚会了,
+    我属于想清楚要做什么事情, 而这个事情需要的条件只是决定去做, 那么我就能够开始做的人. 不过后续事宜就是我的短板.
+    python聚会算是坚持了一段时间, 不过到了后期, 因为没有考虑好如何做好运营,
+    不能给参与者带来价值, 一次比一次人少, 一次比一次差劲, 到最后还是只有部分骨干留下来了.
+    明年我觉得还是先停一段时间, 办得不好, 还不如不办.</p>
+    <p>外出旅游的话, 就 <a class="reference external" href="http://blog.linjunhalida.com/article/%E5%8D%97%E4%BA%AC%E6%B8%B8%E8%AE%B0">南京</a> 有点可以说的地方. 我没有从旅游中获得太多的乐趣.
+    虽然因为我没有去过很多地方感到有点遗憾, 但是因为对我自己的改变不是很大, 以后旅游也不会成为我的一个高优先级项目. 当然, 还是可以作为丰富生活品质的项目.</p>
+    </div>
+    <div class="section" id="id6">
+    <h1>技术领域</h1>
+    <p>这一年, 算起来能够是成长的, 就是我能够用起来了rails, 以及开始做起来了前端开发.
+    其他方面, linux底层, 算法, tcp/ip基础, 这些都是计划要弄懂的, 结果由于我欠缺计划和执行能力而没有涨经验值, 是非常值得检讨的.
+    从历史上来看, 这方面我一直都欠缺, 因此浪费了大量的时间(9年), 我要在2012年好好改变这样的状况, 不然我的人生会变得非常悲惨.</p>
+    <p>我一直在考虑以后未来自己往什么方向发展, 嵌入式, 手机, 服务器后端应用, 前端.
+    我发现自己的兴趣点还是在作出能够给终端用户使用的产品上面, 应用性能調优, 算法架构这2个我还是比较无爱的,
+    未来我计划在保住后端技术基础的前提下, 发展前端, 掌握设计能力.</p>
+    </div>
+    <div class="section" id="id7">
+    <h1>私生活</h1>
+    <p>2011年初, 在老家的时候, 父母给我介绍了一个相亲对象. 因为我这个时候对于选择对象没有多少思路, 就抱着先交往一段时间, 深入发掘优秀点的方式谈了一段时间.
+    然后回到上海, 继续谈了一个月, 发现实在没有感觉, 就主动说明情况结束这样的关系. 之后好像也相亲过几次, 但是都没有进一步的发展.
+    然后我有尝试过其他方式的搭讪, 效果都不是很好. 然后就是朋友圈之类的方式来进行. 因为我在社交方面没有什么经验和心得, 结果也不如意.</p>
+    <p>我个人对于这方面的理论理解模型是这样的: 资源总体上是有限的(谈得起的年龄段访问是固定的), 随着时间过去, 资源总数会减少(成交了), 然后剩下来的是非合适资源(要求高过可提供的价值).
+    当然还有一种, 就是我个人价值增值的速度比较高, 在未来能够有更多的option, 这个我现在不太期待, 并且这方面领域经验的缺陷可能对我人生发展有阻碍.... 说得有点多了.</p>
+    <p>总体上IT男社交经验积累很慢, 对于我来说, 程序员气场很明显, 我希望能够改善这种现象, 不要让&quot;程序员老婆都是别人挑剩下的&quot;这样的事情发生在我身上.</p>
+    <p>现在得到一本教学书, 好好学习和练习. 合适的伴侣可遇不可求, 我不能改变概率, 但是可以增加量. 2012年要经常锻炼对应的能力, 以及投入时间, 创造更多的机会.</p>
+    </div>
+    <div class="section" id="id8">
+    <h1>结论</h1>
+    <p>总体上面, 我的2011年浪费了不少时间(好吧, 总是会有时间浪费的), 方向也不是很明确, 不过还是渐渐清晰起来了:</p>
+    <p>我的目标是能够设计出好的产品. 改变世界. 感兴趣的领域是能够改变最终用户的生活方式, 更感兴趣的是改变人们的学习方式(很想把理想中的大学做到网络上面, 不过没有经验没有思路).</p>
+    <p>完成这样目标需要非常多的修行, 一步步改变吧.</p>
+    </div>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2012-01-01T15:40:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>rails_deploy方法之采用passenger</title>
+    <link>http://blog.linjunhalida.com/article/rails_deploy方法之采用passenger</link>
+    <content:encoded>
+    <div class="document">
+    <p>这里整理一下rails deploy的几种方法.</p>
+    <div class="section" id="passenger">
+    <h1>Passenger</h1>
+    <p>首先是最简单的采用 <a class="reference external" href="http://www.modrails.com/documentation.html">Phusion Passenger</a>, 现在大家都用nginx了吧, 那么下面主要还是看 <a class="reference external" href="http://www.modrails.com/documentation/Users%20guide%20Nginx.html">passenger和nginx的配置</a>.</p>
+    <p>首先安装passenger:</p>
+    <div class="highlight"><pre>gem install passenger
+    </pre></div>
+    <p>然后安装nginx插件:</p>
+    <div class="highlight"><pre>passenger-install-nginx-module
+    </pre></div>
+    <p>然后设置nginx:</p>
+    <div class="highlight"><pre>http <span class="o">{</span>
+        passenger_root /somewhere/passenger-x.x.x;
+        passenger_ruby /usr/bin/ruby;
+        passenger_max_pool_size 10;
+    
+        gzip on;
+    
+        server <span class="o">{</span>
+            server_name www.foo.com;
+            listen 80;
+            root /webapps/foo/public;
+            passenger_enabled on;
+            passenger_use_global_queue on;
+        <span class="o">}</span>
+    <span class="o">}</span>
+    </pre></div>
+    <p>重启服务的话只要:</p>
+    <div class="highlight"><pre>touch /webapps/mycook/tmp/restart.txt
+    </pre></div>
+    <p>基本上这样就可以了. passenger工作的方式还是基于多进程, 它会根据一套算法, 来计算开启多少个线程, 以及如何生成进程, 来响应用户请求.</p>
+    <p>最好要看一下 passenger_spawn_method 和 Spawning methods explained 的部分, 了解一下工作原理. Analysis and system maintenance这部分也最好看看.</p>
+    <p>不过听说passenger只是给初学者用的, 大家会用其他的可配置的工具. 比如 <a class="reference external" href="http://unicorn.bogomips.org/">unicorn</a> 等等.</p>
+    <p>这里再补充一下unicorn的使用方法, 基本上gem install unicorn, 然后执行unicorn_rails -p 8080就可以了. 在nginx上面设置一下端口转发80到8080就能用了. 这里有一个 <a class="reference external" href="http://unicorn.bogomips.org/examples/nginx.conf">unicorn nginx的示例</a> 可以抄.</p>
+    </div>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2011-12-21T09:32:00+00:00</pubDate>
+  </item>
+  <item>
+    <title>为什么成人学习会变得困难</title>
+    <link>http://blog.linjunhalida.com/article/为什么成人学习会变得困难</link>
+    <content:encoded>
+    <div class="document">
+    <p>最近和 <a class="reference external" href="http://about.me/yangchenyun">steven yang</a> 讨论到关于成人教育的问题. 他说他有做过一个演讲, 关于人们从学校毕业以后, 学习新的东西变得很困难. <a class="reference external" href="http://ge.tt/3XTYjJg?c">这里是他的演讲资料</a>.</p>
+    <p>我这里整理一下我的阅读笔记:</p>
+    <p><strong>其中提到了三点, 关于成人教育的困难之处</strong>:</p>
+    <p>首先是观念. 当我们在某些领域掌握了一定程度的技能之后, 我们会限制住自己, 给自己打标签, 比如一个人学会了编程, 从事编程工作的时候,
+    就会给自己打上&quot;程序员&quot;的标签, 而不去考虑其他的可能性. 甚至以此作为借口, 拒绝做其他的事情.</p>
+    <p>然后就是反馈. 在学校里, 学习过程中有着无数的反馈: 阶段性的作业, 学习进度可视化, 来自他人的学习经验以及指导, 团体学习. 但是当我们进入社会的时候, 这些便利的条件都失去了.
+    我们的学习经历, 变得孤立起来, 我们无从得知自己的进度, 无法针对学习的困难找到帮助.</p>
+    <p>还有就是学习内容. 在学校里面, 我们所需要学习的内容会经过筛选和整理, 整体的学习曲线会变得很平缓, 每次学习的内容是有限的. 而在社会中, 在收集需要学习的内容的时候,
+    很容易就信息爆炸, 需要很多年才能全部掌握的知识都摆在你的面前, 并且数量繁杂, 无从下手, 这样的话, 普通人往往望而却步.</p>
+    <p><strong>针对这几点, 有提出一些解决方案</strong>:</p>
+    <p>不要怀疑你的学习能力. 虽然学习经历可能非常困难让人望而却步, 拥有一定能够学会的信心, 是投入学习, 克服学习中遇到的困难的基础.</p>
+    <p>不要投入金钱, 而是投入注意力. 只有注意力才是学习进度提升的燃料.</p>
+    <p>采用进度作为反馈, 而不是成就. 成就(比如能够开发一个网站)在时间线上是随机的, 不好用来作为反馈的内容, 应该选用进度(比如学习了多少时间, 看了多少页的书)来作为反馈的基准.</p>
+    <p>持续学习. 学习需要长期而持续的投入, 在掌握一定阶段的知识之前, 学习成果是不稳固的. 而持续学习本身会变成习惯, 能够让坚持学习变得容易一些.</p>
+    <p>不要相信感觉. 感觉长时间没有进步, 或者感觉无法克服一个学习上的困难, 你不可能对一个你不熟悉的领域感觉正确.</p>
+    <p>以上.</p>
+    </div>
+    </content:encoded>
+    <dc:creator>机械唯物主义</dc:creator>
+    <pubDate>2011-12-20T11:05:00+00:00</pubDate>
+  </item>
+</channel>
+</rss>

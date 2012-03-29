@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list">列表</a>
+            </li>
+            <li>
+              <a href="/about">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>rspec</h1>
+          <div class="document">
+          <img alt="https://www.rapleaf.com/images/developers/open_source/rspec.gif" class="align-center" src="https://www.rapleaf.com/images/developers/open_source/rspec.gif" />
+          <p>我现在在做的 <a class="reference external" href="http://gurudigger.com">GuruDigger</a> 项目一直没有用测试框架, 最近我做了几次大的重构, 结果出现了许多bug, 为了能够保证以后项目不会在重构中挂掉, 我还是需要把测试给整起来.</p>
+          <p>rails的测试框架用得比较多的是rspec.</p>
+          <div class="section" id="rspec">
+          <h1>rspec的原理</h1>
+          <p>我们有一段代码:</p>
+          <div class="highlight"><pre><span class="k">def</span> <span class="nf">exp</span> <span class="n">number</span> <span class="n">n</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">n</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">each</span><span class="p">{</span><span class="n">result</span> <span class="o">*=</span> <span class="n">number</span><span class="p">}</span>
+            <span class="n">result</span>
+          <span class="k">end</span>
+          </pre></div>
+          <p>我们需要给出一个单元测试. rspec的写法是这样的:</p>
+          <div class="highlight"><pre><span class="n">describe</span> <span class="n">exp</span> <span class="k">do</span>
+            <span class="n">it</span> <span class="s2">&quot;should work&quot;</span> <span class="k">do</span>
+              <span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">8</span>
+              <span class="n">exp</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">125</span>
+              <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">should</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+          <p>我们来解释一下. 里面的describe和it是什么意思呢? rspec里面的测试是采用描述性的方式进行的. describe说明具体描述的是什么东西, it指代这个东西它的行为应该是怎么样. 上面的代码一方面做好了测试, 另外一方面也直观地描述了这个方法需要做的事情, 符合人类直觉.</p>
+          <p>然后, 我们看具体验证的部分. 和其他单元测试框架的 assert_equal 函数不同, rspec-expectations 修改了Kernel, 给了一个should方法. 这样让原先的外层函数调用, 变成了内层的方法调用, 造成的结果就是写起来超级直观. 这个算是ruby比较常用的套路了.</p>
+          <p>should的写法可以去看 <a class="reference external" href="https://github.com/rspec/rspec-expectations">rspec-expectations的文档</a>.</p>
+          <p><a class="reference external" href="https://github.com/rspec/rspec-mocks">https://github.com/rspec/rspec-mocks</a> 这一块不太容易懂, 需要看看.</p>
+          </div>
+          <div class="section" id="factory-girl">
+          <h1>factory_girl</h1>
+          <p>factory_girl是取代rails默认生成测试数据的yml格式的一种写法, 原生ruby, 写起来比较舒服和能够嵌入ruby代码.</p>
+          <div class="highlight"><pre><span class="c1"># 定义一个对象</span>
+          <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">define</span> <span class="k">do</span>
+            <span class="n">factory</span> <span class="ss">:user</span> <span class="k">do</span>
+              <span class="n">first_name</span> <span class="s1">&#39;John&#39;</span>
+              <span class="n">last_name</span>  <span class="s1">&#39;Doe&#39;</span>
+              <span class="n">admin</span> <span class="kp">false</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          
+          <span class="c1"># 用到的时候build一下就好.</span>
+          <span class="n">user</span> <span class="o">=</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span>
+          </pre></div>
+          <p>网上也有很详细的教程:</p>
+          <p><a class="reference external" href="https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md">https://github.com/thoughtbot/factory_girl/blob/master/GETTING_STARTED.md</a></p>
+          </div>
+          <div class="section" id="rspecrails">
+          <h1>rspec和rails整合</h1>
+          <p>上面是rspec做测试的部分, 下面我们看如何和rails整合. 其实文档都全了, 我觉得大家还是直接去看官方的文档就好:</p>
+          <p><a class="reference external" href="https://github.com/rspec/rspec-rails">https://github.com/rspec/rspec-rails</a></p>
+          <p>重点是测试的几个类型.</p>
+          </div>
+          <div class="section" id="rspecspork">
+          <h1>rspec加上spork</h1>
+          <p>rspec跑一遍下来超级慢, 于是就有了 <a class="reference external" href="http://spork.rubyforge.org/">spork</a> 这样的东西. 原理就是先跑一个服务器, 加载好对应的环境. 然后需要执行测试的时候, 就通知这个服务器开始测试. 服务器会fork一下, 执行对应的测试.</p>
+          <p>如何使用上面的文档都有. 重点是几步:</p>
+          <ul class="simple">
+          <li>用spork --bootstrap初始化spec_helper.rb, 把每次fork需要做的事情填到对应的方法里面去.</li>
+          <li>跑服务器, 执行spork</li>
+          <li>跑测试. 执行rspec --drb</li>
+          </ul>
+          </div>
+          <div class="section" id="id1">
+          <h1>配置</h1>
+          <p>这里有别人贴出来的配置, 还是挺复杂的, 需要搞搞清楚. 但是搞清楚了, 开发起来你会发现非常舒服(前提是你的机器够好...)
+          <a class="reference external" href="https://gist.github.com/1191428">https://gist.github.com/1191428</a></p>
+          </div>
+          <div class="section" id="id2">
+          <h1>一些资料</h1>
+          <p>rspec书籍:
+          <a class="reference external" href="http://pragprog.com/book/achbd/the-rspec-book">http://pragprog.com/book/achbd/the-rspec-book</a></p>
+          <p>rspec cheetsheet:
+          <a class="reference external" href="http://cheat.errtheblog.com/s/rspec/">http://cheat.errtheblog.com/s/rspec/</a></p>
+          <p>capybara cheetsheet:
+          <a class="reference external" href="https://gist.github.com/428105">https://gist.github.com/428105</a>
+          <a class="reference external" href="http://cheat.errtheblog.com/s/rspec_shoulda/">http://cheat.errtheblog.com/s/rspec_shoulda/</a></p>
+          <p>rspec最佳实践:
+          <a class="reference external" href="http://eggsonbread.com/2010/03/28/my-rspec-best-practices-and-tips/">http://eggsonbread.com/2010/03/28/my-rspec-best-practices-and-tips/</a></p>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2012/03/13 23:00:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>

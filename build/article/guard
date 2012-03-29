@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list">列表</a>
+            </li>
+            <li>
+              <a href="/about">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>guard</h1>
+          <div class="document">
+          <img alt="http://livereload.com/images/LiveReload_350.png" class="align-center" src="http://livereload.com/images/LiveReload_350.png" />
+          <div class="section" id="id1">
+          <h1>介绍</h1>
+          <p><a class="reference external" href="https://github.com/guard/guard">guard</a> 是一个自动监控文件夹变更, 执行特定操作的工具. 如果你有这样的需求, 就可以用它.</p>
+          <p>guard可以和rails整合, <a class="reference external" href="http://railscasts.com/episodes/264-guard?view=asciicast">这里</a> 是介绍.</p>
+          </div>
+          <div class="section" id="id3">
+          <h1>使用方法</h1>
+          <p>比如, 简单地监控当前文件夹里面的变更, 如果变了就重新编译一下,
+          我们先装好一个插件: guard-rake
+          新建一个文件夹,里面2个文件:</p>
+          <p>Guardfile :</p>
+          <pre class="literal-block">
+          guard 'rake', :task =&gt; 'default' do
+            watch(/(.*)/)
+          end
+          </pre>
+          <p>Rakefile:</p>
+          <pre class="literal-block">
+          task :default do
+            sh 'cpp xxx.c -o hello'
+            sh './hello'
+          end
+          </pre>
+          <p>然后在这个文件夹里面执行:</p>
+          <pre class="literal-block">
+          guard
+          </pre>
+          <p>每次这个文件夹里面出现了文件变更, 就会重新执行一下default, 编译执行一下代码, 省去了每次自己点击的操作了.</p>
+          </div>
+          <div class="section" id="id4">
+          <h1>原理</h1>
+          <p>我们使用一个工具的时候一般来说最好还是需要知道一下这个工具的基本工作原理, 不然遇到问题的话也比较好解决.</p>
+          <p>底层根据操作系统采用对应的文件系统监控API(Listener). 在linux下面是调用 <a class="reference external" href="http://en.wikipedia.org/wiki/Inotify">inotify</a>.</p>
+          <p>guard的插件, 需要继承Guard, 实现run_on_change/initialize/start/stop 这些API就可以了.</p>
+          <p>guard本身定义了一套DSL. 在Guardfile里面写的东西, 就会连接到对应的插件上面去. 比如上面的例子, guard 'rake', 下面就会调用guard-rake写的一个插件定义类.</p>
+          </div>
+          <div class="section" id="livereload">
+          <h1>livereload</h1>
+          <p>guard有各种各样的插件, 这里介绍一个神奇的livereload. 它的作用是:</p>
+          <p>在做rails开发的时候, 每次更新了一个源文件, 我们需要手动去刷新一下网站页面. 它能够让你的网页自动刷新.</p>
+          <p>原理:</p>
+          <p>guard维护一个本地的服务器. 网页内嵌有一个js, 连接上这个服务器.</p>
+          <p>当修改文件的时候, guard能够获知修改, 通知所有连上来的客户端, 本地有更新. js接收到更新, 会去自动刷新网页.</p>
+          <p>具体安装需要几个:  <a class="reference external" href="https://github.com/guard/guard-livereload">guard-livereload</a> 作为guard插件. <a class="reference external" href="https://github.com/johnbintz/rack-livereload">rack-livereload</a> 作为rails rack的一个中间件, 用来嵌入livereload的js.</p>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2012/03/11 17:32:00</p>
+          <p>更新时间: 2012/03/11 17:54:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>网络寻租</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="halida" />
+    <link rel="alternate" type="application/rss+xml" title="网络寻租 - RSS" href="http://blog.linjunhalida.com/feed" />
+    <link href="/stylesheets/pygments-default.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>
+  </head>
+  <body class='color-4'>
+    <div id='warper'>
+      <nav>
+        <div id='container'>
+          <ul class='first-nav'>
+            <li>
+              <a href="/">网络寻租</a>
+            </li>
+            <li>
+              <a href="/list">列表</a>
+            </li>
+            <li>
+              <a href="/about">关于</a>
+            </li>
+          </ul>
+          <ul class='secondary-nav'>
+            <li>
+              <a href="/feed">feed</a>
+            </li>
+          </ul>
+          <select id='color-select'>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+      </nav>
+      <div id='block-nav'></div>
+      <div id='content'>
+        <div class='article'>
+          <g:plusone></g:plusone>
+          <script type='text/javascript'>
+            //<![CDATA[
+              window.___gcfg = {lang: 'zh-CN'};
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            //]]>
+          </script>
+          <h1 class='article-title'>rst2s5</h1>
+          <div class="document" id="id1">
+          <h1 class="title">文本方式写幻灯片</h1>
+          <table class="docinfo" frame="void" rules="none">
+          <col class="docinfo-name" />
+          <col class="docinfo-content" />
+          <tbody valign="top">
+          <tr><th class="docinfo-name">Authors:</th>
+          <td>机械唯物主义 &lt;linjunhalida&#64;gmai.com&gt;</td></tr>
+          <tr><th class="docinfo-name">Date:</th>
+          <td>2010-11-10</td></tr>
+          </tbody>
+          </table>
+          <!-- Definitions of interpreted text roles (classes) for S5/HTML data. -->
+          <!-- This data file has been placed in the public domain. -->
+          <!-- Colours
+          ======= -->
+          <!-- Text Sizes
+          ========== -->
+          <!-- Display in Slides (Presentation Mode) Only
+          ========================================== -->
+          <!-- Display in Outline Mode Only
+          ============================ -->
+          <!-- Display in Print Only
+          ===================== -->
+          <!-- Display in Handout Mode Only
+          ============================ -->
+          <!-- Incremental Display
+          =================== -->
+          <div class="contents handout topic" id="contents">
+          <p class="topic-title first">Contents</p>
+          <ul class="simple">
+          <li><a class="reference internal" href="#s5" id="id15">为什么要用S5?</a></li>
+          <li><a class="reference internal" href="#id2" id="id16">S5实例</a></li>
+          <li><a class="reference internal" href="#rst2s5" id="id17">rst2s5实例</a></li>
+          <li><a class="reference internal" href="#id4" id="id18">试用一下</a></li>
+          <li><a class="reference internal" href="#id5" id="id19">本地生成</a></li>
+          <li><a class="reference internal" href="#id6" id="id20">如何写rst2s5?</a></li>
+          <li><a class="reference internal" href="#id9" id="id21">写代码</a></li>
+          <li><a class="reference internal" href="#id11" id="id22">资源</a></li>
+          </ul>
+          </div>
+          <div class="section" id="s5">
+          <h1><a class="toc-backref" href="#id15">为什么要用S5?</a></h1>
+          <p class="handout">作为乐于分享的开发人员, 总是免不了想向其他人介绍一些好玩的东西.
+          这个时候, 我们需要写幻灯片, 用展示自己要讲的东西. 其他人往往使用PPT,
+          PPT是很好, 但是它是二进制专有格式的, 无法以文本方式编辑,
+          也无法进行版本管控, 离开了PPT程序也无法打开,
+          无法满足我们的需求. 那么我们应该用什么工具来做幻灯片呢?
+          在wikipedia上面有 <a class="reference external" href="http://en.wikipedia.org/wiki/Category:Presentation_software/">slide工具列表</a> 来介绍现有的幻灯片工具, 我选择的是 <a class="reference external" href="http://meyerweb.com/eric/tools/s5/">S5</a> .</p>
+          <p class="handout">那么S5有什么好处呢?</p>
+          <ul class="incremental simple">
+          <li>纯文本</li>
+          <li>html</li>
+          </ul>
+          <p class="handout">纯文本, 直观, 清爽, 方便编写以及后期的维护.
+          文件本身其实是html格式的, 利用其他javascript, css之类的设置弄成slide的效果.
+          本身方便分发以及发布, 再也不用超级大的PPT工具啦!</p>
+          </div>
+          <div class="section" id="id2">
+          <h1><a class="toc-backref" href="#id16">S5实例</a></h1>
+          <p class="handout">S5其实就是一个html文件, 带有一堆的css, 脚本什么的, 可以让你以这种方式写:</p>
+          <dl class="incremental docutils">
+          <dt>::</dt>
+          <dd><p class="first">&lt;!-- 这是一张slide --&gt;
+          &lt;div class=&quot;slide&quot; id=&quot;id1&quot;&gt;</p>
+          <div class="system-message">
+          <p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">&lt;string&gt;</tt>, line 50)</p>
+          Unexpected indentation.</div>
+          <blockquote>
+          <p>&lt;!-- 这是slide的标题 --&gt;
+          &lt;h1&gt;为什么要用S5?&lt;/h1&gt;
+          &lt;!-- 这是slide的内容 --&gt;
+          &lt;ul&gt;</p>
+          <div class="system-message">
+          <p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">&lt;string&gt;</tt>, line 54)</p>
+          Unexpected indentation.</div>
+          <blockquote>
+          &lt;li&gt;纯文本&lt;/li&gt;
+          &lt;li&gt;html&lt;/li&gt;</blockquote>
+          <div class="system-message">
+          <p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">&lt;string&gt;</tt>, line 56)</p>
+          Block quote ends without a blank line; unexpected unindent.</div>
+          <p>&lt;/ul&gt;</p>
+          </blockquote>
+          <div class="system-message">
+          <p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">&lt;string&gt;</tt>, line 57)</p>
+          Block quote ends without a blank line; unexpected unindent.</div>
+          <p class="last">&lt;/div&gt;</p>
+          </dd>
+          </dl>
+          <p class="handout">上面就是一张slide的内容, 是不是很简单?</p>
+          </div>
+          <div class="section" id="rst2s5">
+          <h1><a class="toc-backref" href="#id17">rst2s5实例</a></h1>
+          <p class="handout">不过写html也太累了, 那么多尖括号也不直观, 最后我在 <a class="reference external" href="http://zoomquiet.org">大妈</a> 的指导下,
+          找到了rst2s5这个工具. 可以用rst的方式来写, 然后转为S5格式.</p>
+          <p>代码</p>
+          <pre class="literal-block">
+          为什么要用S5?
+          ================================
+          
+          * 纯文本
+          * html
+          </pre>
+          </div>
+          <div class="section" id="id4">
+          <h1><a class="toc-backref" href="#id18">试用一下</a></h1>
+          <p>不多说, <a class="reference external" href="http://vps.linjunhalida.com/tools/rst2s5/">在线rst2s5</a> : <a class="reference external" href="http://server.linjunhalida.com/tools/rst2s5/">http://server.linjunhalida.com/tools/rst2s5/</a></p>
+          </div>
+          <div class="section" id="id5">
+          <h1><a class="toc-backref" href="#id19">本地生成</a></h1>
+          <p class="handout">rst2s5是属于 <a class="reference external" href="http://docutils.sourceforge.net/">docutils</a> 的, 安装后可以在命令行执行</p>
+          <p>need docutils:</p>
+          <pre class="literal-block">
+          rst2s5 xxx.rst xxx.html
+          rst2s5 --theme small-white xxx.rst xxx.html
+          rst2s5 --theme-url http://xxx.com/ui/small-white xxx.rst xxx.html
+          </pre>
+          </div>
+          <div class="section" id="id6">
+          <h1><a class="toc-backref" href="#id20">如何写rst2s5?</a></h1>
+          <ul class="simple">
+          <li><a class="reference external" href="http://docutils.sourceforge.net/docs/user/slide-shows.html">rst2s5教程</a> : google rst2s5</li>
+          </ul>
+          <p class="handout">网上有 <a class="reference external" href="http://docutils.sourceforge.net/docs/user/slide-shows.html">rst2s5教程</a> , 但是没有示例, 我找了半天, 发现这个教程其实也是用rst写出来的, 源文件是 <a class="reference external" href="http://docutils.sourceforge.net/docs/user/slide-shows.txt">这个</a>, 只要仿照这个文件去写就可以了. 或者你可以看我写的 <a class="reference external" href="http://dl.dropbox.com/u/1167873/PyQt%E4%BB%8B%E7%BB%8D/pyqt_intro/pyqt_intro.rst">文档</a>. 不需要去学, 直接抄就好了.</p>
+          <p class="handout">至于rst格式, 你可以看: <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">ReST快速入门</a>, 来学习如何写.</p>
+          </div>
+          <div class="section" id="id9">
+          <h1><a class="toc-backref" href="#id21">写代码</a></h1>
+          <p class="handout">rst2s5也可以写程序整合到自己的系统中. 比如 <a class="reference external" href="http://vps.linjunhalida.com/blog/article/pyqt%E4%BB%8B%E7%BB%8D/">我的博客</a></p>
+          <p>代码:</p>
+          <pre class="literal-block">
+          from docutils.core import publish_string
+          
+          overrides = {'theme': '',
+                       'theme_url': '/statics/S5/ui/small-white',}
+          
+          def rst2S5(string):
+              return publish_string(
+                  source=string,
+                  settings_overrides=overrides,
+                  writer_name='s5')
+          </pre>
+          <p class="handout">上面的代码, theme里面填的是本地有的theme, 如果要引用网站上面的theme,
+          需要把theme栏留空, 设置theme_url.
+          我花了好几个小时才发现只有这样才能激活theme_url的选项.</p>
+          </div>
+          <div class="section" id="id11">
+          <h1><a class="toc-backref" href="#id22">资源</a></h1>
+          <ul class="simple">
+          <li><a class="reference external" href="http://vps.linjunhalida.com/tools/rst2s5/">在线rst2s5</a>: <a class="reference external" href="http://vps.linjunhalida.com/tools/rst2s5/">http://vps.linjunhalida.com/tools/rst2s5/</a></li>
+          <li><a class="reference external" href="http://en.wikipedia.org/wiki/Category:Presentation_software/">slide工具列表</a>: <a class="reference external" href="http://en.wikipedia.org/wiki/Category:Presentation_software/">http://en.wikipedia.org/wiki/Category:Presentation_software/</a></li>
+          <li><a class="reference external" href="http://docutils.sourceforge.net/docs/user/slide-shows.html">rst2s5教程</a>: <a class="reference external" href="http://docutils.sourceforge.net/docs/user/slide-shows.html">http://docutils.sourceforge.net/docs/user/slide-shows.html</a></li>
+          <li><a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">ReST快速入门</a>: <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">http://docutils.sourceforge.net/docs/user/rst/quickref.html</a></li>
+          <li><a class="reference external" href="http://meyerweb.com/eric/tools/s5/">S5</a>: <a class="reference external" href="http://meyerweb.com/eric/tools/s5/">http://meyerweb.com/eric/tools/s5/</a></li>
+          <li><a class="reference external" href="http://docutils.sourceforge.net/">docutils</a>: <a class="reference external" href="http://docutils.sourceforge.net/">http://docutils.sourceforge.net/</a></li>
+          </ul>
+          </div>
+          </div>
+        </div>
+        <div class='time-stamp'>
+          <p>建立时间: 2010/10/26 14:53:00</p>
+          <p>更新时间: 2010/12/25 21:23:00</p>
+        </div>
+        <div id='comments'>
+          <div id='disqus_thread'>
+            <script type="text/javascript">
+            (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://halidasvps.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=halidasvps">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+            <script type="text/javascript">
+            var disqus_shortname = 'halidasvps';
+            (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'http://disqus.com/forums/halidasvps/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+            </script>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>
+          @2011 linjunhalida, all right reserved,
+          source code <a href="https://github.com/halida/haliblog">here</a>.
+        </p>
+      </footer>
+    </div>
+    <div id='return-top-block'>
+      <div id='return-top-inner'>
+        <a id='return-top' onclick="javascript: $('html,body').animate({scrollTop: 0}, 400);">===></a>
+      </div>
+    </div>
+    <script src="/javascripts/jquery.pjax.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery.appear-1.1.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    <script src="/javascripts/vim.js" type="text/javascript"></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        (function() {
+    
+      $(function() {
+        init();
+        return init_vim_key('#content');
+      });
+    
+    }).call(this);
+    
+      //]]>
+    </script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-26509244-1']);
+        _gaq.push(['_trackPageview', '_trackPageLoadTime']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      //]]>
+    </script>
+  </body>
+</html>
