@@ -67,6 +67,7 @@ page "/feed.xml", proxy: "feed.html", layout: :empty do
 end
 
 page "/about.html", proxy: "article.html" do
+  raise
   @article = Article.first title: "about"
 end
 

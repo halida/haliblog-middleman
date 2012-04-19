@@ -1,7 +1,7 @@
 - @articles.each do |article|
 
   %h1.article-title
-    = link_to article.show_title, "/article/#{article.title}.html", true
+    = link_to article.show_title, "/article/#{article.title}", true
 
   .article= article.get_content
 

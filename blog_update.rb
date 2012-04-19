@@ -2,23 +2,25 @@
 require './db'
 
 def updateDB
-  """因为文档是采用rst编写的, 需要能够自动从hg源里面导入进来资料"""
+  """因为文档是采用rst编写的, 需要能够自动从源里面导入进来资料"""
   # 更新
-  `cd ../blog; hg pull; hg up`
+  # `cd ../blog; git pull`
+
   blog_dir = '../blog/'
-  get_created = "hg log -R #{blog_dir} -r0:tip -l 1 --template '{date|isodate}' "
-  get_updated = "hg log -R #{blog_dir} -l 1 --template '{date|isodate}' "
-  # 更新
-  # os.system('hg -R %(repo)s pull;hg -R %(repo)s up' % dict(repo=blog_dir))
+  Dir.chdir blog_dir
+
   # 获取列表
-  lists = Dir.glob(blog_dir + '*.rst')
+  lists = Dir.glob('*.rst')
   # 不获取临时文件(_开头)
   lists.reject!{|file| File.basename(file)[0] == '_'}
+
   # 生成时间, 文件名列表
   infos = lists.map do |file|
     [
-     `#{(get_created + file)}`,
-     `#{(get_updated + file)}`,
+     # created
+     %x{git log --format=%ai "#{file}"| tail -1},
+     # updated
+     %x{git log --format=%ai "#{file}"| head -1},
      File.basename(file, '.rst')
     ]
   end

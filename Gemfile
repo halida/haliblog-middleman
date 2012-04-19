@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'middleman', "~> 2.0"
+gem 'middleman', git: "https://github.com/halida/middleman.git", branch: "old-padrino"
 gem 'haml'
 gem 'data_mapper'
 gem 'sqlite3'
