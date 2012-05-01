@@ -4,7 +4,7 @@ require './db'
 def updateDB
   """因为文档是采用rst编写的, 需要能够自动从源里面导入进来资料"""
   # 更新
-  # `cd ../blog; git pull`
+  `cd ../blog; git pull`
 
   blog_dir = '../blog/'
   Dir.chdir blog_dir

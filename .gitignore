@@ -12,9 +12,11 @@ tmp
 
 
 .sass-cache/
+build/
 
 Gemfile.lock
 tags
 PYSMELLTAGS
 log
 *.swp
+
