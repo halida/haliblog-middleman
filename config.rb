@@ -67,7 +67,6 @@ page "/feed.xml", proxy: "feed.html", layout: :empty do
 end
 
 page "/about.html", proxy: "article.html" do
-  raise
   @article = Article.first title: "about"
 end
 
@@ -77,6 +76,9 @@ end
 
 page "/list.html", proxy: "list.html" do
   @articles = articles
+end
+
+page "/404.html", proxy: "not_found.html" do
 end
 
 page "/index.html" do
