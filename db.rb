@@ -26,7 +26,7 @@ class Article
   end
 
   def get_content
-    if (@content.nil? or @content.empty?) 
+    if true or (@content.nil? or @content.empty?) 
       @content = create_content self.raw_content
     end
     @content

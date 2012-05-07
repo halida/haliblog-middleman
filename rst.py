@@ -23,6 +23,7 @@ def pygments_directive(name, arguments, options, content, lineno,
     except ValueError:
         # no lexer found - use the text one instead of an exception
         lexer = get_lexer_by_name('text')
+        
     parsed = highlight(u'\n'.join(content), lexer, pygments_formatter)
     return [nodes.raw('', parsed, format='html')]
 pygments_directive.arguments = (1, 0, 1)
