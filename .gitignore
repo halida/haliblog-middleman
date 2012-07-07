@@ -10,11 +10,9 @@
 
 tmp
 
-
 .sass-cache/
-build/
+/build
 
-Gemfile.lock
 tags
 PYSMELLTAGS
 log
